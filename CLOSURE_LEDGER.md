@@ -18,7 +18,7 @@ Recorded per Section 0 of the loop prompt. A path that does not exist is recorde
 | REFS | ./refs/ | MISSING |
 | REPORTS | ./reports/ | MISSING |
 | LEDGER | ./CLOSURE_LEDGER.md | CREATED this session |
-| ESCALATIONS | ./DECISIONS_FOR_KYLE.md | NOT CREATED, no escalations raised |
+| ESCALATIONS | ./DECISIONS_FOR_KYLE.md | CREATED 2026-08-15, one escalation (D-1) |
 | STOPS | ./HARD_STOPS.md | NOT CREATED, no hard stop fired |
 | VERIFY | ./VERIFICATION_LEDGER.md | NOT CREATED, blocked, see T0.3 |
 
@@ -31,7 +31,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | Item | Tier | Depends on | Status | Verdict |
 |---|---|---|---|---|
 | T0.1 Reproduction rerun and npz recovery | 0 | none | BLOCKED-EXTERNAL | see record |
-| T0.2 Kappa provenance lookup | 0 | none | BLOCKED-EXTERNAL | see record |
+| T0.2 Kappa provenance lookup | 0 | none | ESCALATED-AUTHOR-DECISION | D-1; see record |
 | T0.3 Numeric inventory | 0 | none | BLOCKED-EXTERNAL | see record |
 | T1.1 Section 4.1 mechanism decision | 1 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T1.2 Section 4.3 and 5.1 bracket resolution | 1 | T0.2 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
@@ -70,9 +70,12 @@ Verdict: BLOCKED-EXTERNAL
 Date: 2026-08-15
 Definition of done: determine, with a file path and line reference, whether the 27 ns and 240 ns detector-threshold figures are in-sample on the four-year calibration record.
 What was done: the item calls for a search of the typeset LaTeX sources, the notebooks, and any derivation files. None of these exist in the repository or on disk, so the search itself cannot be run.
-Why this is BLOCKED-EXTERNAL and not ESCALATED-AUTHOR-DECISION: the escalation path applies when artifacts exist but do not settle the question. Here the search corpus is absent entirely, so the finding "not determinable from available artifacts" would be vacuous, and the escalation format cannot be filled because it requires facts with file paths. Once the sources are delivered, this item should be re-opened and the three-way finding made against them.
-External action needed: deliver the manuscript LaTeX sources, the analysis notebooks, and any threshold derivation files covering the four-year calibration record.
+Why this was initially BLOCKED-EXTERNAL and not ESCALATED-AUTHOR-DECISION: the escalation path applies when artifacts exist but do not settle the question. At the time of the first pass the search corpus was absent entirely.
+External action needed at first pass: deliver the manuscript LaTeX sources, the analysis notebooks, and any threshold derivation files covering the four-year calibration record.
 Evidence: repository census in the path configuration audit above.
+
+UPDATE 2026-08-15, second pass after manuscript delivery. Verdict revised to ESCALATED-AUTHOR-DECISION.
+The search was run against the delivered manuscript_v11.pdf via ./extraction/manuscript_v11_pdftotext.txt. Finding: not determinable from available artifacts, with locations cited. The 27 and 240 ns values appear in Section 4.3 (extraction lines 560 to 562) followed immediately by the manuscript's own bracketed author decision on their provenance (lines 564 to 570); the mirrored contingent bracket sits in Section 5.1 (lines 785 to 795). The calibration notebooks that would settle in-sample versus out-of-sample remain absent. Per this item's own rule, not determinable becomes ESCALATED-AUTHOR-DECISION: written as D-1 in DECISIONS_FOR_KYLE.md. Delivering the kappa calibration notebook would convert D-1 back into an evidence question.
 
 ### T0.3 Numeric inventory
 Verdict: BLOCKED-EXTERNAL
