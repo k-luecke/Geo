@@ -34,7 +34,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | T1.1 Section 4.1 mechanism decision | 1 | T0.1 | OPEN | |
 | T1.2 Section 4.3 and 5.1 bracket resolution | 1 | T0.2 | OPEN | |
 | T1.3 Appendix version identity | 1 | T0.1 | OPEN | |
-| T2.1 Bibliography insertion | 2 | none | OPEN | |
+| T2.1 Bibliography insertion | 2 | none | BLOCKED-EXTERNAL | see record |
 | T2.2 Medium-confidence field resolution | 2 | T2.1 | OPEN | |
 | T2.3 Unrecovered patent and dataset fields | 2 | T2.1 | OPEN | |
 | T2.4 Data-source acknowledgment | 2 | none | OPEN | |
@@ -79,3 +79,12 @@ Definition of done: extract every numeric claim in the manuscript into VERIFICAT
 What was done: neither ./manuscript_v11.tex nor ./manuscript_v11.md exists, so there is no text to inventory. An empty verification ledger would pass the letter of the gate while recording nothing; it was not created, to avoid a misleading artifact.
 External action needed: deliver manuscript_v11.tex or manuscript_v11.md, plus the source artifacts numeric claims trace to (at minimum ./artifacts/o3_results.json).
 Evidence: repository census in the path configuration audit above.
+
+### T2.1 Bibliography insertion
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: insert the verified reference set into the manuscript bibliography with section mapping, then compile clean.
+What was done: the verified reference set lives in ./refs/ (reference verification report and bibliography), and the insertion target is manuscript_v11.tex. Neither exists. Reconstructing the reference set from memory would violate standing order 1, so nothing was inserted.
+External action needed: deliver ./refs/ (the reference verification report with the section mapping and full entry fields) and manuscript_v11.tex.
+Evidence: repository census in the path configuration audit above.
+Downstream effect: T2.2 and T2.3 depend on this item and remain OPEN, unselectable.
