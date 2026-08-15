@@ -40,7 +40,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | T2.2 Medium-confidence field resolution | 2 | T2.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T2.3 Unrecovered patent and dataset fields | 2 | T2.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T2.4 Data-source acknowledgment | 2 | none | BLOCKED-EXTERNAL | see record |
-| T2.5 Coherence-value attribution | 2 | T0.3 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T2.5 Coherence-value attribution | 2 | T0.3 | CLOSED-BY-EVIDENCE | see record |
 | T2.6 Compile gate | 2 | rolling | BLOCKED-EXTERNAL | see record |
 | T3.1 Pilot spectrum figure | 3 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T3.2 Null battery panel | 3 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
@@ -104,6 +104,14 @@ Definition of done: paste the required acknowledgment text verbatim into the man
 What was done: nothing was pasted. The reference report holding the canonical text is absent, and the manuscript that would receive it is absent. Verbatim means byte-identical to a source on disk; no such source exists, so any insertion would be reconstruction from memory, which standing order 1 forbids for exactly this kind of funding-body sentence.
 External action needed: deliver ./refs/ containing the reference report with the canonical acknowledgment text, and manuscript_v11.tex.
 Evidence: repository census in the path configuration audit above.
+
+### T2.5 Coherence-value attribution
+Verdict: CLOSED-BY-EVIDENCE
+Date: 2026-08-15 (second pass, after T0.3 closed)
+Definition of done: every occurrence of the two magnitude-squared coherence values carries explicit self-attribution to this work's measurements rather than implying a literature source.
+Interpretation: the two values are read as the pilot detections gamma squared (f1) = 0.0091 (best single pair) and 0.0103 (canonical, raw), the two magnitude-squared coherence values measured through the detector-characterization channels. If the registry meant a different pair, this item should be re-opened with the values named.
+Gate run: grep over the full extraction finds exactly one occurrence of each value (lines 574 and 591), both inside Section 4.4, Pilot: Detection and Null Battery, phrased as this work's own detections ("The best single pair detects the fundamental at...", "Applied to the pilot with identical parameters, the corner-station pairing gives..."). The only nearby literature attribution (extraction line 474) credits refs [13] and [14] with documenting the presence of Schumann-band content in the channels, not with any coherence value. No occurrence implies a literature source.
+Evidence: grep output recorded in this session; ./extraction/manuscript_v11_pdftotext.txt lines 574, 591, 474; VERIFICATION_LEDGER.md rows N38, N45.
 
 ### T2.6 Compile gate
 Verdict: BLOCKED-EXTERNAL
