@@ -37,7 +37,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | T2.1 Bibliography insertion | 2 | none | BLOCKED-EXTERNAL | see record |
 | T2.2 Medium-confidence field resolution | 2 | T2.1 | OPEN | |
 | T2.3 Unrecovered patent and dataset fields | 2 | T2.1 | OPEN | |
-| T2.4 Data-source acknowledgment | 2 | none | OPEN | |
+| T2.4 Data-source acknowledgment | 2 | none | BLOCKED-EXTERNAL | see record |
 | T2.5 Coherence-value attribution | 2 | T0.3 | OPEN | |
 | T2.6 Compile gate | 2 | rolling | OPEN | |
 | T3.1 Pilot spectrum figure | 3 | T0.1 | OPEN | |
@@ -88,3 +88,11 @@ What was done: the verified reference set lives in ./refs/ (reference verificati
 External action needed: deliver ./refs/ (the reference verification report with the section mapping and full entry fields) and manuscript_v11.tex.
 Evidence: repository census in the path configuration audit above.
 Downstream effect: T2.2 and T2.3 depend on this item and remain OPEN, unselectable.
+
+### T2.4 Data-source acknowledgment
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: paste the required acknowledgment text verbatim into the manuscript acknowledgment section, byte-compared against the source in the reference report.
+What was done: nothing was pasted. The reference report holding the canonical text is absent, and the manuscript that would receive it is absent. Verbatim means byte-identical to a source on disk; no such source exists, so any insertion would be reconstruction from memory, which standing order 1 forbids for exactly this kind of funding-body sentence.
+External action needed: deliver ./refs/ containing the reference report with the canonical acknowledgment text, and manuscript_v11.tex.
+Evidence: repository census in the path configuration audit above.
