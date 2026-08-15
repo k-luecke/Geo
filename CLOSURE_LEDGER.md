@@ -31,25 +31,25 @@ Repository census at session start: the working tree contains exactly one file, 
 | T0.1 Reproduction rerun and npz recovery | 0 | none | BLOCKED-EXTERNAL | see record |
 | T0.2 Kappa provenance lookup | 0 | none | BLOCKED-EXTERNAL | see record |
 | T0.3 Numeric inventory | 0 | none | BLOCKED-EXTERNAL | see record |
-| T1.1 Section 4.1 mechanism decision | 1 | T0.1 | OPEN | |
-| T1.2 Section 4.3 and 5.1 bracket resolution | 1 | T0.2 | OPEN | |
-| T1.3 Appendix version identity | 1 | T0.1 | OPEN | |
+| T1.1 Section 4.1 mechanism decision | 1 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T1.2 Section 4.3 and 5.1 bracket resolution | 1 | T0.2 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T1.3 Appendix version identity | 1 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T2.1 Bibliography insertion | 2 | none | BLOCKED-EXTERNAL | see record |
-| T2.2 Medium-confidence field resolution | 2 | T2.1 | OPEN | |
-| T2.3 Unrecovered patent and dataset fields | 2 | T2.1 | OPEN | |
+| T2.2 Medium-confidence field resolution | 2 | T2.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T2.3 Unrecovered patent and dataset fields | 2 | T2.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T2.4 Data-source acknowledgment | 2 | none | BLOCKED-EXTERNAL | see record |
-| T2.5 Coherence-value attribution | 2 | T0.3 | OPEN | |
+| T2.5 Coherence-value attribution | 2 | T0.3 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T2.6 Compile gate | 2 | rolling | BLOCKED-EXTERNAL | see record |
-| T3.1 Pilot spectrum figure | 3 | T0.1 | OPEN | |
-| T3.2 Null battery panel | 3 | T0.1 | OPEN | |
-| T3.3 Offset bound versus integration time | 3 | T0.1 | OPEN | |
-| T4.1 Route 2, source-geometry forward model | 4 | T0.1 | OPEN | |
+| T3.1 Pilot spectrum figure | 3 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T3.2 Null battery panel | 3 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T3.3 Offset bound versus integration time | 3 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T4.1 Route 2, source-geometry forward model | 4 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T4.2 Route 4, segment verification | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.3 Route 5, sequential detection closure | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.4 Route 8, multi-sensor bound | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.5 Route 7, preregistration draft | 4 | none | BLOCKED-EXTERNAL | see record |
-| T4.6 Route 1, source-longitude regression | 4 | T4.1, T4.5 | OPEN | |
-| T4.7 Route 3, methodology validation only | 4 | T4.1 | OPEN | |
+| T4.6 Route 1, source-longitude regression | 4 | T4.1, T4.5 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
+| T4.7 Route 3, methodology validation only | 4 | T4.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 
 ## Item records
 
