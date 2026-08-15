@@ -29,7 +29,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | Item | Tier | Depends on | Status | Verdict |
 |---|---|---|---|---|
 | T0.1 Reproduction rerun and npz recovery | 0 | none | BLOCKED-EXTERNAL | see record |
-| T0.2 Kappa provenance lookup | 0 | none | OPEN | |
+| T0.2 Kappa provenance lookup | 0 | none | BLOCKED-EXTERNAL | see record |
 | T0.3 Numeric inventory | 0 | none | OPEN | |
 | T1.1 Section 4.1 mechanism decision | 1 | T0.1 | OPEN | |
 | T1.2 Section 4.3 and 5.1 bracket resolution | 1 | T0.2 | OPEN | |
@@ -61,4 +61,13 @@ Date: 2026-08-15
 Definition of done: run o3_recompile.ipynb end to end, honor its gates, produce o3_spectra.npz, diff the verdict block against frozen o3_results.json, serialize null_mean and null_sd, write an output-hash manifest.
 What was done: searched the working tree, the full git history (single commit, LICENSE only), all remote refs (main only), and the surrounding filesystem. The directory ./artifacts/ does not exist. None of o3_recompile.ipynb, o3_results.json, o3_vault_run.py are present anywhere on disk.
 External action needed: commit or otherwise deliver the ./artifacts/ directory containing o3_recompile.ipynb, the frozen o3_results.json, and o3_vault_run.py, together with whatever input data the notebook reads. No substitute artifact was fabricated and no reproduction was simulated.
+Evidence: repository census in the path configuration audit above.
+
+### T0.2 Kappa provenance lookup
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: determine, with a file path and line reference, whether the 27 ns and 240 ns detector-threshold figures are in-sample on the four-year calibration record.
+What was done: the item calls for a search of the typeset LaTeX sources, the notebooks, and any derivation files. None of these exist in the repository or on disk, so the search itself cannot be run.
+Why this is BLOCKED-EXTERNAL and not ESCALATED-AUTHOR-DECISION: the escalation path applies when artifacts exist but do not settle the question. Here the search corpus is absent entirely, so the finding "not determinable from available artifacts" would be vacuous, and the escalation format cannot be filled because it requires facts with file paths. Once the sources are delivered, this item should be re-opened and the three-way finding made against them.
+External action needed: deliver the manuscript LaTeX sources, the analysis notebooks, and any threshold derivation files covering the four-year calibration record.
 Evidence: repository census in the path configuration audit above.
