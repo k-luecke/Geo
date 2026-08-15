@@ -44,7 +44,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | T3.2 Null battery panel | 3 | T0.1 | OPEN | |
 | T3.3 Offset bound versus integration time | 3 | T0.1 | OPEN | |
 | T4.1 Route 2, source-geometry forward model | 4 | T0.1 | OPEN | |
-| T4.2 Route 4, segment verification | 4 | none | OPEN | |
+| T4.2 Route 4, segment verification | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.3 Route 5, sequential detection closure | 4 | none | OPEN | |
 | T4.4 Route 8, multi-sensor bound | 4 | none | OPEN | |
 | T4.5 Route 7, preregistration draft | 4 | none | OPEN | |
@@ -103,4 +103,12 @@ Date: 2026-08-15
 Definition of done: compile after every Tier 2 edit with zero errors, zero overfull boxes, zero undefined references.
 What was done: no Tier 2 edit was possible this session (T2.1 through T2.5 are blocked or dependency-locked) and there is no manuscript_v11.tex to compile, so the gate had nothing to run against.
 External action needed: deliver manuscript_v11.tex; the gate becomes active as soon as any Tier 2 edit lands.
+Evidence: repository census in the path configuration audit above.
+
+### T4.2 Route 4, segment verification
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: intersect the coincident analysis-ready segment lists, check documented gaps against the frozen window, freeze the boundaries in a file.
+What was done: nothing could be intersected. The segment lists, the definition of the frozen window, and the gap documentation are not in the repository; the eight-route execution map in ./reports/ that specifies which detector segment databases apply is also absent.
+External action needed: deliver the analysis-ready segment lists for both nodes, the frozen window definition (start and end times), and the documented gap list, or the ./reports/ execution map that points to them.
 Evidence: repository census in the path configuration audit above.
