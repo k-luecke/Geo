@@ -20,7 +20,7 @@ Recorded per Section 0 of the loop prompt. A path that does not exist is recorde
 | LEDGER | ./CLOSURE_LEDGER.md | CREATED this session |
 | ESCALATIONS | ./DECISIONS_FOR_KYLE.md | CREATED 2026-08-15, one escalation (D-1) |
 | STOPS | ./HARD_STOPS.md | NOT CREATED, no hard stop fired |
-| VERIFY | ./VERIFICATION_LEDGER.md | NOT CREATED, blocked, see T0.3 |
+| VERIFY | ./VERIFICATION_LEDGER.md | CREATED 2026-08-15, 90 rows |
 
 Artifact deliveries, 2026-08-15 session continuation: the author uploaded manuscript_v11.pdf three times under the names manuscript_v11, manuscript_v111, manuscript_v112; all three are byte-identical (single sha256), so only one manuscript version exists in this session. A companion explainer page, silentshift.html, was landed at ./site/silentshift.html; it is outside the closure loop's scope. A zip of the eris staging repo (bibliography.md, literature-review.md, data-acquisition-manifest.md) was received but every project file in it is truncated at about 20 KB mid-sentence and its MANIFEST.sha256 was computed over the truncated bytes; it was NOT committed. Fresh hashes for the landed files are in ./MANIFEST.sha256.
 
@@ -32,7 +32,7 @@ Repository census at session start: the working tree contains exactly one file, 
 |---|---|---|---|---|
 | T0.1 Reproduction rerun and npz recovery | 0 | none | BLOCKED-EXTERNAL | see record |
 | T0.2 Kappa provenance lookup | 0 | none | ESCALATED-AUTHOR-DECISION | D-1; see record |
-| T0.3 Numeric inventory | 0 | none | BLOCKED-EXTERNAL | see record |
+| T0.3 Numeric inventory | 0 | none | CLOSED-BY-EVIDENCE | VERIFICATION_LEDGER.md, 90 rows; see record |
 | T1.1 Section 4.1 mechanism decision | 1 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T1.2 Section 4.3 and 5.1 bracket resolution | 1 | T0.2 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
 | T1.3 Appendix version identity | 1 | T0.1 | OPEN | dependency-locked, upstream item is BLOCKED-EXTERNAL |
@@ -81,9 +81,12 @@ The search was run against the delivered manuscript_v11.pdf via ./extraction/man
 Verdict: BLOCKED-EXTERNAL
 Date: 2026-08-15
 Definition of done: extract every numeric claim in the manuscript into VERIFICATION_LEDGER.md, one row per claim, with source artifact and field.
-What was done: neither ./manuscript_v11.tex nor ./manuscript_v11.md exists, so there is no text to inventory. An empty verification ledger would pass the letter of the gate while recording nothing; it was not created, to avoid a misleading artifact.
-External action needed: deliver manuscript_v11.tex or manuscript_v11.md, plus the source artifacts numeric claims trace to (at minimum ./artifacts/o3_results.json).
-Evidence: repository census in the path configuration audit above.
+What was done at first pass: neither ./manuscript_v11.tex nor ./manuscript_v11.md existed, so there was no text to inventory. An empty verification ledger would pass the letter of the gate while recording nothing; it was not created, to avoid a misleading artifact.
+Evidence at first pass: repository census in the path configuration audit above.
+
+UPDATE 2026-08-15, second pass after manuscript delivery. Verdict revised to CLOSED-BY-EVIDENCE.
+The full manuscript was read and every numeric claim inventoried into VERIFICATION_LEDGER.md: 90 rows, each with claim, value, manuscript location (section plus extraction line), source artifact, source field, and status. Gate check: no row has an empty source column; 81 rows are UNSOURCED (source artifacts named by the manuscript but not on disk), 4 VERIFIED (internal derivations recomputed this session), 5 FLAG (provenance or citation marked unresolved by the manuscript itself, each cross-referenced to D-1, T1.3, T2.2, or T2.3). Eighteen internal arithmetic relationships were machine-recomputed and all matched; no contradiction was found, so hard stop 5 did not fire.
+Evidence: ./VERIFICATION_LEDGER.md.
 
 ### T2.1 Bibliography insertion
 Verdict: BLOCKED-EXTERNAL
