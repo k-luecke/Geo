@@ -39,7 +39,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | T2.3 Unrecovered patent and dataset fields | 2 | T2.1 | OPEN | |
 | T2.4 Data-source acknowledgment | 2 | none | BLOCKED-EXTERNAL | see record |
 | T2.5 Coherence-value attribution | 2 | T0.3 | OPEN | |
-| T2.6 Compile gate | 2 | rolling | OPEN | |
+| T2.6 Compile gate | 2 | rolling | BLOCKED-EXTERNAL | see record |
 | T3.1 Pilot spectrum figure | 3 | T0.1 | OPEN | |
 | T3.2 Null battery panel | 3 | T0.1 | OPEN | |
 | T3.3 Offset bound versus integration time | 3 | T0.1 | OPEN | |
@@ -95,4 +95,12 @@ Date: 2026-08-15
 Definition of done: paste the required acknowledgment text verbatim into the manuscript acknowledgment section, byte-compared against the source in the reference report.
 What was done: nothing was pasted. The reference report holding the canonical text is absent, and the manuscript that would receive it is absent. Verbatim means byte-identical to a source on disk; no such source exists, so any insertion would be reconstruction from memory, which standing order 1 forbids for exactly this kind of funding-body sentence.
 External action needed: deliver ./refs/ containing the reference report with the canonical acknowledgment text, and manuscript_v11.tex.
+Evidence: repository census in the path configuration audit above.
+
+### T2.6 Compile gate
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: compile after every Tier 2 edit with zero errors, zero overfull boxes, zero undefined references.
+What was done: no Tier 2 edit was possible this session (T2.1 through T2.5 are blocked or dependency-locked) and there is no manuscript_v11.tex to compile, so the gate had nothing to run against.
+External action needed: deliver manuscript_v11.tex; the gate becomes active as soon as any Tier 2 edit lands.
 Evidence: repository census in the path configuration audit above.
