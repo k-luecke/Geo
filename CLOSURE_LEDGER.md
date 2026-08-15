@@ -45,7 +45,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | T3.3 Offset bound versus integration time | 3 | T0.1 | OPEN | |
 | T4.1 Route 2, source-geometry forward model | 4 | T0.1 | OPEN | |
 | T4.2 Route 4, segment verification | 4 | none | BLOCKED-EXTERNAL | see record |
-| T4.3 Route 5, sequential detection closure | 4 | none | OPEN | |
+| T4.3 Route 5, sequential detection closure | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.4 Route 8, multi-sensor bound | 4 | none | OPEN | |
 | T4.5 Route 7, preregistration draft | 4 | none | OPEN | |
 | T4.6 Route 1, source-longitude regression | 4 | T4.1, T4.5 | OPEN | |
@@ -111,4 +111,12 @@ Date: 2026-08-15
 Definition of done: intersect the coincident analysis-ready segment lists, check documented gaps against the frozen window, freeze the boundaries in a file.
 What was done: nothing could be intersected. The segment lists, the definition of the frozen window, and the gap documentation are not in the repository; the eight-route execution map in ./reports/ that specifies which detector segment databases apply is also absent.
 External action needed: deliver the analysis-ready segment lists for both nodes, the frozen window definition (start and end times), and the documented gap list, or the ./reports/ execution map that points to them.
+Evidence: repository census in the path configuration audit above.
+
+### T4.3 Route 5, sequential detection closure
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: write the close-by-citation paragraph for the whitened case, or state the residual open problem precisely, after checking it against the two most likely recent closures named in the literature memo.
+What was done: nothing was written. The literature closure memo in ./reports/ that names the two candidate closures is absent, so the mandated closure check cannot be run as specified; the gate explicitly requires evidence that the check against those named works was performed. The manuscript section that would receive the paragraph is also absent. Substituting my own candidate literature for the memo's named candidates would silently change the preregistered check.
+External action needed: deliver the literature closure memo (naming the two candidate closures for the whitened sequential detection case) and manuscript_v11.tex.
 Evidence: repository census in the path configuration audit above.
