@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Silent Shift</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root{
+  --void:#080d16;
+  --panel:#0e1a2b;
+  --panel2:#12233a;
+  --grid:#1b3350;
+  --gridfaint:#132538;
+  --ink:#e8f0fa;
+  --dim:#8ba3bf;
+  --dimmer:#5d7590;
+  --friend:#4cc9f0;
+  --adversary:#ff495f;
+  --caution:#ffb13d;
+  --safe:#37dfa0;
+  --signal:#a98bff;
+  --hair:rgba(120,160,200,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--void);color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--gridfaint) 1px,transparent 1px),
+    linear-gradient(90deg,var(--gridfaint) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(ellipse 120% 90% at 50% 0%,#000 25%,transparent 78%);
+  mask-image:radial-gradient(ellipse 120% 90% at 50% 0%,#000 25%,transparent 78%);
+  opacity:.5;
+}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 22px}
+
+/* ---------- type ---------- */
+.kicker{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;color:var(--dim)}
+h1,h2,h3{font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:.01em;line-height:1.02;margin:0}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ---------- hero ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:80px 0 60px}
+.hero .plate{border:1px solid var(--hair);background:linear-gradient(180deg,rgba(18,35,58,.55),rgba(8,13,22,.2));padding:38px clamp(22px,4vw,52px);position:relative}
+.hero .corner{position:absolute;width:16px;height:16px;border:2px solid var(--friend);opacity:.7}
+.c-tl{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.c-tr{top:-1px;right:-1px;border-left:none;border-bottom:none}
+.c-bl{bottom:-1px;left:-1px;border-right:none;border-top:none}
+.c-br{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.hero h1{font-size:clamp(3.4rem,11vw,8.2rem);font-weight:700;text-transform:uppercase;letter-spacing:.005em}
+.hero h1 .em{color:var(--adversary)}
+.hero .sub{max-width:640px;margin-top:22px;font-size:clamp(1rem,1.4vw,1.22rem);color:var(--dim)}
+.hero .sub b{color:var(--ink);font-weight:600}
+.hero .eq{font-family:'JetBrains Mono',monospace;margin-top:26px;font-size:clamp(1rem,2.1vw,1.5rem);color:var(--friend);display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hero .eq .dd{color:var(--adversary)}
+.metarow{display:flex;flex-wrap:wrap;gap:26px;margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;color:var(--dimmer);text-transform:uppercase}
+.metarow span b{color:var(--dim);font-weight:500}
+.scrollcue{margin-top:46px;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.3em;color:var(--dim);display:flex;align-items:center;gap:12px}
+.scrollcue .ln{width:52px;height:1px;background:linear-gradient(90deg,var(--friend),transparent)}
+
+/* ---------- legend / depth key ---------- */
+.legend{border:1px solid var(--hair);background:var(--panel);margin:0 0 20px;display:grid;grid-template-columns:repeat(3,1fr)}
+.legend .lg{padding:16px 18px;border-right:1px solid var(--hair)}
+.legend .lg:last-child{border-right:none}
+.legend .lg .tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.legend .lg .tag::before{content:"";width:11px;height:11px;flex:none}
+.legend .story .tag::before{background:var(--friend)}
+.legend .system .tag::before{background:var(--caution)}
+.legend .algebra .tag::before{background:var(--signal)}
+.legend .lg p{margin:0;font-size:.82rem;color:var(--dim);line-height:1.45}
+
+/* ---------- act header ---------- */
+.act{margin:96px 0 30px;display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+.act .num{font-family:'Oswald',sans-serif;font-size:clamp(2.6rem,7vw,5rem);font-weight:700;color:transparent;-webkit-text-stroke:1.4px var(--grid);line-height:.8}
+.act .lbl h2{font-size:clamp(1.7rem,4vw,2.9rem);text-transform:uppercase;color:var(--ink)}
+.act .lbl .k{color:var(--friend)}
+.act.red .lbl .k{color:var(--adversary)}
+.act.violet .lbl .k{color:var(--signal)}
+.act.green .lbl .k{color:var(--safe)}
+.act .lbl p{margin:6px 0 0;color:var(--dim);font-size:.95rem;max-width:560px}
+
+/* ---------- panel ---------- */
+.panel{border:1px solid var(--hair);background:linear-gradient(180deg,var(--panel),rgba(8,13,22,.7));margin:22px 0;overflow:hidden;position:relative}
+.panel .pnum{position:absolute;top:12px;left:14px;font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.22em;color:var(--dimmer);z-index:3}
+.stage{position:relative;background:
+  radial-gradient(ellipse 90% 120% at 50% 40%,rgba(30,55,90,.32),transparent 70%);
+  border-bottom:1px solid var(--hair)}
+.stage svg{display:block;width:100%;height:auto}
+
+/* annotation bands */
+.bands{display:grid;grid-template-columns:1fr 1fr 1fr}
+.band{padding:16px 18px 18px;border-right:1px solid var(--hair)}
+.band:last-child{border-right:none}
+.band .bt{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:9px;color:var(--dim)}
+.band .bt::before{content:"";width:9px;height:9px;flex:none}
+.band.b-story .bt::before{background:var(--friend)}
+.band.b-sys .bt::before{background:var(--caution)}
+.band.b-alg .bt::before{background:var(--signal)}
+.band.b-story{border-left:2px solid var(--friend)}
+.band.b-sys{border-left:2px solid var(--caution)}
+.band.b-alg{border-left:2px solid var(--signal)}
+.band p{margin:0;font-size:.86rem;color:var(--dim);line-height:1.5}
+.band p b{color:var(--ink);font-weight:600}
+.band.b-alg .eqline{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--ink);background:rgba(0,0,0,.28);border:1px solid var(--hair);padding:8px 10px;margin:7px 0;line-height:1.5;overflow-x:auto;white-space:nowrap}
+.band.b-alg .eqline .r{color:var(--adversary)}
+.band.b-alg .eqline .g{color:var(--safe)}
+.band.b-alg .eqline .c{color:var(--friend)}
+.band.b-alg .cap{font-size:.76rem;color:var(--dimmer)}
+
+/* full-width caption strip */
+.cap-strip{padding:20px 22px;border-top:1px solid var(--hair);background:rgba(0,0,0,.18)}
+.cap-strip .lead{font-family:'Oswald',sans-serif;font-size:1.15rem;letter-spacing:.02em;color:var(--ink);text-transform:uppercase}
+.cap-strip p{margin:6px 0 0;color:var(--dim);font-size:.92rem;max-width:760px}
+
+/* ---------- ledger ---------- */
+.ledger{border:1px solid var(--hair);margin:26px 0;overflow:hidden}
+.ledger .lhead{display:grid;grid-template-columns:1.1fr 1fr 1fr}
+.ledger .lhead>div{padding:16px 18px;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.03em;border-right:1px solid var(--hair);font-size:1.05rem}
+.ledger .lhead .h-un{color:var(--adversary)}
+.ledger .lhead .h-mit{color:var(--safe);border-right:none}
+.ledger .lrow{display:grid;grid-template-columns:1.1fr 1fr 1fr;border-top:1px solid var(--hair)}
+.ledger .lrow>div{padding:14px 18px;border-right:1px solid var(--hair);font-size:.86rem;color:var(--dim)}
+.ledger .lrow>div:last-child{border-right:none}
+.ledger .lrow .k{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--ink);text-transform:uppercase}
+.ledger .lrow .un{color:#ffb9c1}
+.ledger .lrow .mit{color:#a6f0d3}
+
+/* ---------- caveat ---------- */
+.caveat{border:1px solid var(--hair);border-left:3px solid var(--caution);background:var(--panel);padding:22px 24px;margin:26px 0}
+.caveat h3{font-size:1.2rem;text-transform:uppercase;color:var(--caution);margin-bottom:8px}
+.caveat ul{margin:12px 0 0;padding:0;list-style:none}
+.caveat li{position:relative;padding:8px 0 8px 26px;border-top:1px solid var(--hair);font-size:.9rem;color:var(--dim)}
+.caveat li:first-child{border-top:none}
+.caveat li::before{content:"\25B3";position:absolute;left:0;top:8px;color:var(--caution);font-size:.8rem}
+.caveat li b{color:var(--ink);font-weight:600}
+
+/* ---------- closing ---------- */
+.close{text-align:center;padding:90px 0 40px}
+.close .big{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(1.8rem,5vw,3.4rem);line-height:1.05}
+.close .big .un{color:var(--adversary)}
+.close .big .mit{color:var(--safe)}
+.close p{max-width:560px;margin:20px auto 0;color:var(--dim)}
+.foot{border-top:1px solid var(--hair);margin-top:60px;padding:26px 0 70px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.16em;color:var(--dimmer);text-transform:uppercase}
+
+/* ---------- consequence metrics ---------- */
+.metricrow{display:flex;flex-wrap:wrap;gap:12px;padding:15px 22px;border-top:1px solid var(--hair);background:rgba(0,0,0,.16)}
+.metric{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.04em;color:var(--dim);border:1px solid var(--hair);padding:7px 12px;display:flex;gap:9px;align-items:baseline;line-height:1.2}
+.metric b{font-family:'Oswald',sans-serif;font-size:1.12rem;letter-spacing:.02em;color:var(--ink)}
+.metric.red b{color:var(--adversary)}
+.metric.amber b{color:var(--caution)}
+.metric.green b{color:var(--safe)}
+.metric.cyan b{color:var(--friend)}
+
+/* ---------- incidents ---------- */
+.incidents{border:1px solid var(--hair);border-left:3px solid var(--dim);background:var(--panel);margin:26px 0;padding:20px 24px}
+.incidents .ih{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.incidents .isub{font-size:.86rem;color:var(--dim);margin:0 0 14px}
+.inc{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:13px 0;border-top:1px solid var(--hair)}
+.inc .when{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--caution);line-height:1.4}
+.inc .what{font-size:.88rem;color:var(--dim);line-height:1.5}
+.inc .what b{color:var(--ink);font-weight:600}
+
+/* ---------- references ---------- */
+.refs{border-top:1px solid var(--hair);margin-top:40px;padding:22px 0 0;font-family:'JetBrains Mono',monospace;font-size:.66rem;line-height:1.85;color:var(--dimmer);letter-spacing:.03em}
+.refs .rh{letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.refs span{color:var(--dim)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* ambient anims */
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes drift{0%{transform:translateX(0)}100%{transform:translateX(-38px)}}
+.pk{animation:drift 2.6s linear infinite}
+.wv{animation:pulse 3.4s ease-in-out infinite}
+.wv2{animation:pulse 3.4s ease-in-out .5s infinite}
+.wv3{animation:pulse 3.4s ease-in-out 1s infinite}
+.evileye{animation:pulse 1.8s ease-in-out infinite}
+
+@media (max-width:760px){
+  .legend{grid-template-columns:1fr}
+  .legend .lg{border-right:none;border-bottom:1px solid var(--hair)}
+  .bands{grid-template-columns:1fr}
+  .band{border-right:none;border-bottom:1px solid var(--hair)}
+  .band:last-child{border-bottom:none}
+  .inc{grid-template-columns:1fr;gap:6px}
+  .ledger .lhead,.ledger .lrow{grid-template-columns:1fr}
+  .ledger .lhead>div,.ledger .lrow>div{border-right:none;border-bottom:1px solid var(--hair)}
+  .ledger .lrow>div:last-child,.ledger .lhead>div:last-child{border-bottom:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important}
+  .rv{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- reusable defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="packet"><path d="M0 -5 L7 0 L0 5 L2 0 Z" fill="#4cc9f0"/></g>
+    <g id="packetR"><path d="M0 -5 L7 0 L0 5 L2 0 Z" fill="#ff495f"/></g>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="#8ba3bf"/></marker>
+    <marker id="arrowR" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="#ff495f"/></marker>
+    <marker id="dimtick" markerWidth="6" markerHeight="12" refX="3" refY="6" orient="auto"><path d="M3 0 L3 12" stroke="#ffb13d" stroke-width="1.4"/></marker>
+    <g id="base">
+      <path d="M-46 24 L-46 2 L-30 -12 L30 -12 L46 2 L46 24 Z" fill="#0f2135" stroke="#4cc9f0" stroke-width="1.6"/>
+      <rect x="-30" y="-2" width="60" height="26" fill="none" stroke="#4cc9f0" stroke-width="1"/>
+      <rect x="-20" y="6" width="12" height="18" fill="#0a1826" stroke="#4cc9f0" stroke-width=".8"/>
+      <rect x="8" y="6" width="12" height="18" fill="#0a1826" stroke="#4cc9f0" stroke-width=".8"/>
+      <line x1="0" y1="-12" x2="0" y2="-40" stroke="#4cc9f0" stroke-width="1.4"/>
+      <circle cx="0" cy="-42" r="3" fill="#4cc9f0"/>
+      <path d="M-14 -30 A20 20 0 0 1 14 -30" fill="none" stroke="#4cc9f0" stroke-width="1" opacity=".7"/>
+    </g>
+    <g id="jet">
+      <path d="M-34 0 L18 -3 L34 0 L18 3 Z" fill="#0f2135" stroke="#4cc9f0" stroke-width="1.5"/>
+      <path d="M-6 -2 L-20 -18 L-8 -3 Z" fill="#0f2135" stroke="#4cc9f0" stroke-width="1.2"/>
+      <path d="M-6 2 L-20 18 L-8 3 Z" fill="#0f2135" stroke="#4cc9f0" stroke-width="1.2"/>
+      <path d="M20 -2 L30 -9 L26 -1 Z" fill="#0f2135" stroke="#4cc9f0" stroke-width="1"/>
+      <circle cx="22" cy="0" r="2" fill="#4cc9f0"/>
+    </g>
+    <g id="sub">
+      <ellipse cx="0" cy="0" rx="42" ry="12" fill="#0f2135" stroke="#4cc9f0" stroke-width="1.5"/>
+      <path d="M-10 -12 L-6 -24 L10 -24 L14 -12 Z" fill="#0f2135" stroke="#4cc9f0" stroke-width="1.3"/>
+      <line x1="2" y1="-24" x2="2" y2="-34" stroke="#4cc9f0" stroke-width="1.2"/>
+      <circle cx="-24" cy="0" r="2.4" fill="none" stroke="#4cc9f0" stroke-width="1"/>
+      <circle cx="-12" cy="0" r="2.4" fill="none" stroke="#4cc9f0" stroke-width="1"/>
+      <path d="M34 0 L46 -6 M34 0 L46 6" stroke="#4cc9f0" stroke-width="1.2" fill="none"/>
+    </g>
+    <g id="evilbox">
+      <rect x="-26" y="-22" width="52" height="44" rx="3" fill="#1a0a10" stroke="#ff495f" stroke-width="1.8"/>
+      <path d="M-26 -10 L26 -10" stroke="#ff495f" stroke-width=".8" opacity=".5"/>
+      <circle class="evileye" cx="-9" cy="2" r="4" fill="#ff495f"/>
+      <circle class="evileye" cx="9" cy="2" r="4" fill="#ff495f"/>
+      <path d="M-14 14 Q0 8 14 14" stroke="#ff495f" stroke-width="1.6" fill="none"/>
+      <path d="M-20 -30 L-20 -22 M20 -30 L20 -22" stroke="#ff495f" stroke-width="1.4"/>
+      <text x="0" y="-27" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#ff495f">MITM</text>
+    </g>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <div class="plate">
+      <span class="corner c-tl"></span><span class="corner c-tr"></span>
+      <span class="corner c-bl"></span><span class="corner c-br"></span>
+      <div class="kicker">Time-Integrity Field Manual &middot; No. 01</div>
+      <h1>The Silent<br>Shift<span class="em">.</span></h1>
+      <p class="sub">A delay attack does not break your network. It does not drop a packet, forge a signature, or trip an alarm. It moves a clock by <b>half of a delay it inserts</b> &mdash; and the math says you cannot see it from the wire. This is the story of that half, and of the signal beneath the network that finally catches it.</p>
+      <div class="eq mono">&theta;&#770; = &theta; <span class="dd">+ &delta;/2</span> <span style="color:var(--dim);font-size:.7em">&larr; the whole attack, in three symbols</span></div>
+      <div class="metarow">
+        <span><b>THEATER:</b> BASE &middot; AIR &middot; SUBSURFACE</span>
+        <span><b>FABRIC:</b> IEEE 1588 PTP</span>
+        <span><b>THREAT:</b> ASYMMETRIC DELAY BOX</span>
+        <span><b>MONITOR:</b> SCHUMANN 6&ndash;25 Hz</span>
+      </div>
+      <div class="scrollcue"><span class="ln"></span>SCROLL TO RUN THE OPERATION</div>
+    </div>
+  </header>
+
+  <!-- ================= LEGEND ================= -->
+  <div class="legend rv">
+    <div class="lg story"><div class="tag">Story</div><p>Follow the cyan band for the operation as it plays out &mdash; plain language, no math required.</p></div>
+    <div class="lg system"><div class="tag">System</div><p>The amber band explains what the timing hardware is actually doing at each beat.</p></div>
+    <div class="lg algebra"><div class="tag">Algebra</div><p>The violet band carries the real equations. Read only the bands you want &mdash; each stands alone.</p></div>
+  </div>
+
+  <!-- ================= ACT I ================= -->
+  <div class="act rv">
+    <div class="num">I</div>
+    <div class="lbl"><h2>Clocks in <span class="k">Agreement</span></h2><p>Before the attack: three assets, one shared sense of "now." This is what correct looks like &mdash; and why it's fragile.</p></div>
+  </div>
+
+  <!-- PANEL 1 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 01 &middot; NOMINAL EXCHANGE</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 300" role="img" aria-label="Base, jet and submarine exchanging timestamped PTP messages with clocks in agreement.">
+        <line x1="0" y1="196" x2="1040" y2="196" stroke="#1b3350" stroke-width="1" opacity=".6"/>
+        <text x="14" y="212" class="mono" font-size="9" fill="#5d7590">SEA LEVEL</text>
+        <g transform="translate(150,150)"><use href="#base"/><text x="0" y="52" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">COMMAND (MASTER)</text><text x="0" y="66" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">CLK 12:00:00.000</text></g>
+        <g transform="translate(530,96)"><use href="#jet"/><text x="0" y="34" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">AIR (SLAVE)</text><text x="0" y="48" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">CLK 12:00:00.000</text></g>
+        <g transform="translate(880,244)"><use href="#sub"/><text x="0" y="34" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">SUBSURFACE (SLAVE)</text><text x="0" y="48" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">CLK 12:00:00.000</text></g>
+        <line x1="200" y1="140" x2="492" y2="104" stroke="#4cc9f0" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/>
+        <use href="#packet" class="pk" transform="translate(240,135)"/>
+        <use href="#packet" class="pk" transform="translate(340,123)"/>
+        <use href="#packet" class="pk" transform="translate(440,111)"/>
+        <text x="300" y="90" class="mono" font-size="9" fill="#8ba3bf">t1 &rarr; Sync &rarr; t2</text>
+        <text x="300" y="158" class="mono" font-size="9" fill="#8ba3bf">t3 &larr; Delay_Req &larr; t4</text>
+        <line x1="568" y1="104" x2="840" y2="232" stroke="#4cc9f0" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/>
+        <g transform="translate(0,278)">
+          <text x="16" y="0" class="mono" font-size="9" fill="#5d7590">OFFSET RAIL</text>
+          <line x1="120" y1="0" x2="1010" y2="0" stroke="#1b3350" stroke-width="1"/>
+          <line x1="565" y1="-7" x2="565" y2="7" stroke="#37dfa0" stroke-width="2"/>
+          <text x="565" y="-12" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">TRUE = SLAVE &middot; &Delta; 0</text>
+        </g>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>The base, the jet, and the boat all agree on the time to the microsecond. A strike is timed, a rendezvous is set, and everyone's picture of the world lines up. Nothing here looks remarkable &mdash; which is exactly the point.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>PTP trades four timestamps per exchange: the master stamps a message out (<b>t1</b>) and in (<b>t4</b>); the slave stamps it in (<b>t2</b>) and out (<b>t3</b>). From those four numbers each slave computes its own offset and steers its clock onto the master's.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">t2 &minus; t1 = d&#8202;ms + &theta;</div>
+        <div class="eqline">t4 &minus; t3 = d&#8202;sm &minus; &theta;</div>
+        <div class="eqline">&theta;&#770; = &frac12;[(t2&minus;t1)&minus;(t4&minus;t3)] = &theta; + &frac12;(d&#8202;ms&minus;d&#8202;sm)</div>
+        <p class="cap">If the path is symmetric (d&#8202;ms = d&#8202;sm), the delay terms cancel and <span class="c">&theta;&#770; = &theta;</span>. The estimate is exact. That single assumption is the whole game.</p>
+      </div>
+    </div>
+    <div class="cap-strip">
+      <div class="lead">Correct rests on one word: symmetric.</div>
+      <p>The offset solver never measures each direction separately &mdash; it can't. It assumes the trip out and the trip back take equal time, and splits the difference. Break that assumption quietly, and the solver will keep reporting "all clear" while it walks the clock off a cliff.</p>
+    </div>
+  </div>
+
+  <!-- ================= ACT II ================= -->
+  <div class="act red rv">
+    <div class="num">II</div>
+    <div class="lbl"><h2>The <span class="k">Silent Shift</span></h2><p>An adversary slips onto one link and adds delay to a single direction. No packet is lost. No signature fails. Watch the clock move anyway.</p></div>
+  </div>
+
+  <!-- PANEL 2 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 02 &middot; THE BOX ON THE WIRE</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 260" role="img" aria-label="A malicious delay box taps the link between command and the air asset, holding return packets.">
+        <g transform="translate(150,120)"><use href="#base"/><text x="0" y="52" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">COMMAND</text></g>
+        <g transform="translate(890,120)"><use href="#jet"/><text x="0" y="40" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">AIR ASSET</text></g>
+        <line x1="205" y1="118" x2="470" y2="118" stroke="#4cc9f0" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/>
+        <line x1="570" y1="118" x2="845" y2="118" stroke="#ff495f" stroke-width="1" stroke-dasharray="2 4" opacity=".6"/>
+        <g transform="translate(520,118)"><use href="#evilbox"/></g>
+        <use href="#packet" class="pk" transform="translate(300,110)"/>
+        <text x="300" y="96" class="mono" font-size="9" fill="#4cc9f0">Sync &rarr;  passes clean</text>
+        <use href="#packetR" transform="translate(640,128)"/>
+        <use href="#packetR" transform="translate(680,128)"/>
+        <use href="#packetR" transform="translate(720,128)"/>
+        <text x="700" y="150" class="mono" font-size="9" fill="#ff495f">&larr; Delay_Req  HELD +&delta;</text>
+        <path d="M560 150 Q590 172 640 150" stroke="#ff495f" stroke-width="1.2" fill="none" marker-end="url(#arrowR)"/>
+        <text x="600" y="190" text-anchor="middle" class="mono" font-size="10" fill="#ff495f">inserts &delta; on the return path only</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>Somewhere on the link &mdash; a compromised switch, a tapped fiber, a rogue relay &mdash; sits a box. It lets messages <b>toward</b> the jet through untouched, but holds each reply for a few extra microseconds before releasing it. It never alters content. It only waits.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>This is the <b>undetectable delay box</b>. Encryption doesn't help: the bytes are authentic and intact. Path-asymmetry checks that need a second route don't help a single-homed node. The box attacks <b>when</b> a valid message arrives, not <b>what</b> it says.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">d&#8202;sm &rarr; d&#8202;sm <span class="r">+ &delta;</span></div>
+        <p class="cap">One direction's delay grows by &delta;. The forward direction is untouched. Nothing in the payload changes &mdash; only the arrival time of a message that is otherwise perfectly valid.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 03 &middot; THE CLOCK IS PULLED</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 300" role="img" aria-label="The slave clock offset shifts by delta over two while the offset rail slides silently.">
+        <g transform="translate(140,120)"><use href="#base"/><text x="0" y="52" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">COMMAND</text><text x="0" y="66" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">12:00:00.000</text></g>
+        <g transform="translate(520,120)"><use href="#evilbox"/></g>
+        <g transform="translate(890,120)"><use href="#jet"/><text x="0" y="40" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">AIR ASSET</text><text x="0" y="54" text-anchor="middle" class="mono" font-size="9" fill="#ff495f">12:00:00.000 + &delta;/2</text></g>
+        <line x1="200" y1="118" x2="470" y2="118" stroke="#4cc9f0" stroke-width="1" stroke-dasharray="2 4" opacity=".4"/>
+        <line x1="570" y1="118" x2="840" y2="118" stroke="#ff495f" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/>
+        <g transform="translate(0,248)">
+          <text x="16" y="0" class="mono" font-size="9" fill="#5d7590">OFFSET RAIL</text>
+          <line x1="120" y1="0" x2="1010" y2="0" stroke="#1b3350" stroke-width="1"/>
+          <line x1="565" y1="-8" x2="565" y2="8" stroke="#8ba3bf" stroke-width="1.4"/>
+          <text x="565" y="24" text-anchor="middle" class="mono" font-size="8" fill="#8ba3bf">TRUE</text>
+          <line x1="700" y1="-9" x2="700" y2="9" stroke="#ff495f" stroke-width="2.4"/>
+          <text x="700" y="24" text-anchor="middle" class="mono" font-size="8" fill="#ff495f">SLAVE CLK</text>
+          <line x1="565" y1="-18" x2="700" y2="-18" stroke="#ffb13d" stroke-width="1.2" marker-start="url(#dimtick)" marker-end="url(#dimtick)"/>
+          <text x="632" y="-24" text-anchor="middle" class="mono" font-size="10" fill="#ffb13d">&delta;/2 &mdash; and no alarm</text>
+        </g>
+        <text x="520" y="196" text-anchor="middle" class="mono" font-size="10" fill="#ff495f">solver splits the extra delay in half &rarr; clock walks</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>The jet's clock is now fast by half the inserted delay. Not broken &mdash; <b>shifted</b>. Every log says healthy. Every status light is green. The jet believes, with total confidence, in a "now" that is quietly wrong. This is the shift the manual is named for.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>Because the solver splits total round-trip delay evenly, an imbalance of &delta; lands as an offset error of exactly <b>&delta;/2</b>. Worse: the mean-delay estimate rises by &delta;/2 too &mdash; which just reads as "a slightly longer route." Entirely plausible. Entirely unflagged.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">&theta;&#770; = &theta; + &frac12;(d&#8202;ms &minus; d&#8202;sm <span class="r">&minus; &delta;</span>) = <span class="r">&theta; &minus; &delta;/2</span>*</div>
+        <div class="eqline">d&#770; = &frac12;[(t2&minus;t1)+(t4&minus;t3)] = d + <span class="r">&delta;/2</span></div>
+        <p class="cap">*Sign of the pull follows which direction is delayed; magnitude is always &delta;/2. The excess delay hides inside a larger, innocuous-looking path estimate.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 04 &middot; WHY THE WIRE CAN'T SEE IT</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 250" role="img" aria-label="Three unknowns, two equations: the antisymmetric delay is aliased into the clock offset and cannot be separated.">
+        <text x="520" y="44" text-anchor="middle" font-family="Oswald" font-size="22" fill="#e8f0fa" letter-spacing="1">THREE UNKNOWNS &middot; TWO EQUATIONS</text>
+        <g font-family="JetBrains Mono" font-size="13">
+          <rect x="120" y="72" width="150" height="46" rx="3" fill="#12233a" stroke="#4cc9f0" stroke-width="1.2"/><text x="195" y="94" text-anchor="middle" fill="#4cc9f0">&theta;</text><text x="195" y="110" text-anchor="middle" font-size="9" fill="#8ba3bf">clock offset</text>
+          <rect x="290" y="72" width="150" height="46" rx="3" fill="#12233a" stroke="#ffb13d" stroke-width="1.2"/><text x="365" y="94" text-anchor="middle" fill="#ffb13d">d ms</text><text x="365" y="110" text-anchor="middle" font-size="9" fill="#8ba3bf">forward delay</text>
+          <rect x="460" y="72" width="150" height="46" rx="3" fill="#12233a" stroke="#ffb13d" stroke-width="1.2"/><text x="535" y="94" text-anchor="middle" fill="#ffb13d">d sm</text><text x="535" y="110" text-anchor="middle" font-size="9" fill="#8ba3bf">return delay</text>
+        </g>
+        <g font-family="JetBrains Mono" font-size="12">
+          <text x="700" y="86" fill="#8ba3bf">you can measure:</text>
+          <text x="700" y="106" fill="#e8f0fa">&theta; + &frac12;(d ms &minus; d sm)</text>
+          <text x="700" y="126" fill="#e8f0fa">(d ms + d sm)</text>
+        </g>
+        <rect x="120" y="150" width="800" height="66" rx="3" fill="#1a0a10" stroke="#ff495f" stroke-width="1.3"/>
+        <text x="520" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#ff495f">the antisymmetric delay &frac12;(d ms &minus; d sm) is ALIASED into &theta;</text>
+        <text x="520" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#ffb9c1">no amount of packet data can pull them apart &mdash; an (n&minus;1)-dimensional blind subspace</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>You might think a smarter algorithm could catch this. It can't &mdash; and that's a theorem, not a shortcoming. From inside the network, a delay imbalance and a clock error are <b>the same measurement</b>. The wire physically cannot tell them apart.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>Three things are unknown &mdash; the offset and the two one-way delays &mdash; but the timestamps give only two independent combinations. The system is underdetermined by one dimension. Estimation theory (Freris&ndash;Graham&ndash;Kumar) proves the antisymmetric delay is unrecoverable from the node's own observables.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">unknowns: {&theta;, d&#8202;ms, d&#8202;sm} &mdash; dim 3</div>
+        <div class="eqline">observables: 2 independent sums</div>
+        <div class="eqline">&rarr; blind subspace dim = <span class="r">n &minus; 1</span></div>
+        <p class="cap">The defense the wire needs does not exist in the wire. This is the settled premise &mdash; not a wall to engineer around, but the reason a second, outside reference is required.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ACT III ================= -->
+  <div class="act red rv">
+    <div class="num">III</div>
+    <div class="lbl"><h2>The <span class="k">Cost</span></h2><p>The shift is silent &mdash; but it is not harmless. Follow the same &delta;/2 into three real operations and watch what it actually breaks. The rule underneath all three: a clock error becomes a physical error at the speed of the signal.</p></div>
+  </div>
+
+  <!-- PANEL 5 : BASE -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 05 &middot; BASE &mdash; THE EMITTER MOVES 9 KILOMETRES</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 250" role="img" aria-label="A base geolocating a hostile emitter by time-difference-of-arrival; a 30 microsecond timing pull shifts the computed location about 9 kilometres onto empty ground.">
+        <line x1="0" y1="205" x2="1040" y2="205" stroke="#1b3350" stroke-width="1" opacity=".5"/>
+        <g transform="translate(150,158)"><use href="#base" transform="scale(.8)"/><text x="0" y="46" text-anchor="middle" class="mono" font-size="9" fill="#4cc9f0">TDOA RECEIVERS</text></g>
+        <line x1="188" y1="148" x2="690" y2="120" stroke="#4cc9f0" stroke-width="1" stroke-dasharray="2 5" opacity=".4"/>
+        <line x1="188" y1="164" x2="690" y2="128" stroke="#4cc9f0" stroke-width="1" stroke-dasharray="2 5" opacity=".4"/>
+        <g transform="translate(700,118)">
+          <line x1="0" y1="0" x2="0" y2="34" stroke="#ff495f" stroke-width="1.6"/><path d="M-7 0 L0 -12 L7 0 Z" fill="#1a0a10" stroke="#ff495f" stroke-width="1.3"/>
+          <path d="M-13 -6 A18 18 0 0 1 13 -6" fill="none" stroke="#ff495f" stroke-width="1" opacity=".8"/>
+          <text x="0" y="52" text-anchor="middle" class="mono" font-size="9" fill="#ff495f">TRUE EMITTER</text>
+        </g>
+        <g transform="translate(470,118)" opacity=".55">
+          <line x1="0" y1="0" x2="0" y2="34" stroke="#ffb13d" stroke-width="1.6" stroke-dasharray="3 3"/><path d="M-7 0 L0 -12 L7 0 Z" fill="none" stroke="#ffb13d" stroke-width="1.3"/>
+          <text x="0" y="52" text-anchor="middle" class="mono" font-size="9" fill="#ffb13d">COMPUTED FIX</text>
+        </g>
+        <line x1="470" y1="92" x2="700" y2="92" stroke="#ffb13d" stroke-width="1.3" marker-start="url(#dimtick)" marker-end="url(#dimtick)"/>
+        <text x="585" y="84" text-anchor="middle" class="mono" font-size="11" fill="#ffb13d">&asymp; 9 km   (&delta; = 30 &micro;s &times; 300 m/&micro;s)</text>
+        <path d="M470 156 l-9 18 l13 0 l-9 20" stroke="#ff495f" stroke-width="1.6" fill="none"/>
+        <text x="470" y="228" text-anchor="middle" class="mono" font-size="9" fill="#ff495f">fires cued onto empty ground</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>The base runs passive geolocation &mdash; separated antennas listening for a hostile emitter and triangulating it from the tiny differences in when its signal arrives. The delay box has pulled one antenna's clock. The computed position slides kilometres off truth. A strike cued on that fix lands on empty ground &mdash; or worse.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>Time-difference-of-arrival turns a clock error straight into a position error at the speed of light: about <b>300 m per microsecond</b>. A 30-&micro;s pull is ~9 km before geometry (GDOP) makes it worse. TDOA is designed to sync to <b>nanoseconds</b>; a microsecond-class offset is already catastrophic.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">&Delta;x &asymp; c &middot; &Delta;t = 3&times;10&#8312; &middot; 30&micro;s = <span class="r">9 km</span></div>
+        <div class="eqline">&Delta;x&#8202;real = GDOP &times; c&middot;&Delta;t   (GDOP &gt; 1)</div>
+        <p class="cap">Same physics hits the base's own grid: a PMU crosses the 1% error limit at 26.5 &micro;s = 1&deg; &mdash; enough to false-trip a generator.</p>
+      </div>
+    </div>
+    <div class="metricrow">
+      <div class="metric red"><b>9 km</b> geolocation error @ 30 &micro;s</div>
+      <div class="metric amber"><b>&times;GDOP</b> geometry amplifies it</div>
+      <div class="metric cyan"><b>ns-class</b> its real sync budget</div>
+      <div class="metric amber"><b>26.5 &micro;s</b> PMU 1&deg; false-trip line</div>
+    </div>
+  </div>
+
+  <!-- PANEL 6 : AIR -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 06 &middot; AIR &mdash; THE JET FALLS OUT OF THE NET</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 250" role="img" aria-label="An aircraft on Link 16 loses fine time synchronisation and its transmission slides out of its assigned TDMA time slot; its frequency-hopping radio desyncs.">
+        <g transform="translate(150,74)"><use href="#jet" transform="scale(.9)"/><text x="0" y="34" text-anchor="middle" class="mono" font-size="9" fill="#4cc9f0">AIR ASSET &middot; LINK 16</text></g>
+        <g transform="translate(360,62)">
+          <rect x="0" y="0" width="120" height="34" fill="#0f2135" stroke="#4cc9f0" stroke-width="1"/>
+          <rect x="130" y="0" width="120" height="34" fill="#12233a" stroke="#4cc9f0" stroke-width="1.6"/>
+          <rect x="260" y="0" width="120" height="34" fill="#0f2135" stroke="#4cc9f0" stroke-width="1"/>
+          <text x="60" y="22" text-anchor="middle" class="mono" font-size="8" fill="#5d7590">n&minus;1</text>
+          <text x="190" y="22" text-anchor="middle" class="mono" font-size="9" fill="#4cc9f0">MY SLOT</text>
+          <text x="320" y="22" text-anchor="middle" class="mono" font-size="8" fill="#5d7590">n+1</text>
+          <text x="190" y="-8" text-anchor="middle" class="mono" font-size="8" fill="#8ba3bf">7.8125 ms</text>
+        </g>
+        <rect x="700" y="62" width="90" height="34" fill="rgba(255,73,95,.18)" stroke="#ff495f" stroke-width="1.6"/>
+        <rect x="790" y="62" width="30" height="34" fill="rgba(255,73,95,.18)" stroke="#ff495f" stroke-width="1.6" stroke-dasharray="3 2"/>
+        <text x="790" y="46" text-anchor="middle" class="mono" font-size="9" fill="#ff495f">TX bleeds into n+1</text>
+        <text x="600" y="120" text-anchor="middle" class="mono" font-size="10" fill="#ffb13d">&delta; pulled clock &rarr; fine sync lost &rarr; slot collision</text>
+        <g transform="translate(150,146)">
+          <text x="0" y="0" class="mono" font-size="9" fill="#8ba3bf">FREQ-HOP (keyed on time-of-day)</text>
+          <path d="M0 42 L44 42 L44 22 L88 22 L88 54 L132 54 L132 34 L176 34" fill="none" stroke="#4cc9f0" stroke-width="1.3"/>
+          <path d="M230 42 L274 22 L318 54 L362 34 L406 48" fill="none" stroke="#ff495f" stroke-width="1.3" stroke-dasharray="3 3"/>
+          <text x="88" y="74" text-anchor="middle" class="mono" font-size="8" fill="#4cc9f0">aligned</text>
+          <text x="316" y="74" text-anchor="middle" class="mono" font-size="8" fill="#ff495f">desynced &rarr; link drops</text>
+        </g>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>The jet lives on Link 16, sharing the picture and taking cues. As its clock is pulled it first loses the <b>fine sync</b> its precision navigation depends on. Push the offset toward a slot-width and it transmits into someone else's time slot &mdash; and drops off the shared picture entirely. Its jam-resistant radio, whose hops are keyed to time, desyncs and the link dies.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>Link 16 is TDMA: <b>7.8125 ms</b> slots, 128 a second. Fine sync fails at a few tens of microseconds; the relative-navigation function needs <b>under 20 ns</b>. Frequency-hop TRANSEC derives the hop pattern from time-of-day, so drift past a dwell fraction desynchronizes the sequence and the link fails.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">slot = 7.8125 ms &middot; fine-sync window &asymp; 50 &micro;s</div>
+        <div class="eqline">nav function needs |&Delta;t| &lt; 20 ns</div>
+        <div class="eqline">|&Delta;t| &gt; dwell &rArr; <span class="r">hop desync</span></div>
+        <p class="cap">Tens of &micro;s degrades; approaching a slot-width drops the terminal from the net.</p>
+      </div>
+    </div>
+    <div class="metricrow">
+      <div class="metric cyan"><b>7.8125 ms</b> TDMA slot width</div>
+      <div class="metric amber"><b>~50 &micro;s</b> fine-sync window</div>
+      <div class="metric cyan"><b>&lt;20 ns</b> relative-nav budget</div>
+      <div class="metric red"><b>link drop</b> hop desync</div>
+    </div>
+  </div>
+
+  <!-- PANEL 7 : SUB -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 07 &middot; SUBSURFACE &mdash; SONAR FINE, COMMS LOCKED OUT</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 260" role="img" aria-label="A submarine's acoustic ranging is immune to microsecond timing error, but its radio comms window and crypto synchronisation are not.">
+        <line x1="0" y1="98" x2="1040" y2="98" stroke="#4cc9f0" stroke-width="1" opacity=".5"/>
+        <text x="16" y="92" class="mono" font-size="9" fill="#5d7590">SEA SURFACE</text>
+        <g transform="translate(230,182)"><use href="#sub" transform="scale(.85)"/></g>
+        <path d="M276 176 A38 38 0 0 1 276 208" fill="none" stroke="#37dfa0" stroke-width="1.2"/>
+        <path d="M292 170 A54 54 0 0 1 292 214" fill="none" stroke="#37dfa0" stroke-width="1" opacity=".6"/>
+        <circle cx="400" cy="192" r="6" fill="none" stroke="#37dfa0" stroke-width="1.4"/>
+        <text x="330" y="150" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">ACOUSTIC RANGING</text>
+        <text x="330" y="236" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">1 &micro;s = 1.5 mm &mdash; intact &#10003;</text>
+        <g transform="translate(760,152)"><use href="#sub" transform="scale(.8)"/></g>
+        <line x1="762" y1="122" x2="762" y2="60" stroke="#ffb13d" stroke-width="1.2"/>
+        <text x="770" y="118" class="mono" font-size="8" fill="#ffb13d">antenna</text>
+        <g transform="translate(902,44)"><rect x="-14" y="-8" width="28" height="16" rx="2" fill="#0f2135" stroke="#4cc9f0" stroke-width="1.2"/><line x1="-22" y1="0" x2="-14" y2="0" stroke="#4cc9f0"/><line x1="14" y1="0" x2="22" y2="0" stroke="#4cc9f0"/></g>
+        <line x1="770" y1="56" x2="884" y2="46" stroke="#ff495f" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <path d="M820 42 l14 14 M834 42 l-14 14" stroke="#ff495f" stroke-width="1.9"/>
+        <text x="822" y="88" text-anchor="middle" class="mono" font-size="9" fill="#ff495f">TRANSEC / time-of-day window missed &#10007;</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>Here is the counterintuitive one. The boat's own sonar and torpedo ranging are <b>fine</b> &mdash; sound is so slow that a microsecond of clock error is a millimetre of range. But when it comes shallow to stream an antenna for its brief comms window, its nudged clock no longer matches the network's time-of-day schedule. It misses the window; it cannot enter the net; the tasking never arrives.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>Underwater sound travels at ~1500 m/s, so timing maps to range at <b>1.5 mm per microsecond</b> &mdash; acoustics are timing-robust. The fragile parts are all RF: comms-window alignment, the crypto/frequency-hop sequence keyed on time-of-day, and TDMA net entry &mdash; microsecond-to-millisecond fragile. Submerged, holdover drift (~&micro;s/day) compounds it.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">acoustic: &Delta;r = 1500 &middot; &Delta;t &rarr; 1&micro;s = <span class="g">1.5 mm</span></div>
+        <div class="eqline">RF backhaul: 1&micro;s = <span class="r">300 m</span></div>
+        <div class="eqline">net entry needs |&Delta;t| &lt; sync window</div>
+        <p class="cap">Same clock error: negligible to sonar, five orders of magnitude larger for anything RF-referenced.</p>
+      </div>
+    </div>
+    <div class="metricrow">
+      <div class="metric green"><b>1.5 mm/&micro;s</b> acoustic &mdash; robust</div>
+      <div class="metric red"><b>300 m/&micro;s</b> RF backhaul &mdash; fragile</div>
+      <div class="metric amber"><b>~&micro;s/day</b> GPS-denied holdover</div>
+      <div class="metric red"><b>window missed</b> net lockout</div>
+    </div>
+  </div>
+
+  <!-- PANEL 8 : FRAGILITY LADDER -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 08 &middot; THE FRAGILITY LADDER</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 320" role="img" aria-label="A logarithmic scale of timing error from 1 nanosecond to 1 second, marking each system's tolerance, where a bounded 77 microsecond error lands, and the unbounded attacker region to the right.">
+        <rect x="120" y="44" width="310" height="186" fill="rgba(76,201,240,.045)"/>
+        <rect x="430" y="44" width="270" height="186" fill="rgba(255,177,61,.045)"/>
+        <rect x="700" y="44" width="300" height="186" fill="rgba(55,223,160,.045)"/>
+        <line x1="430" y1="44" x2="430" y2="230" stroke="#1b3350" stroke-width="1" stroke-dasharray="2 4"/>
+        <line x1="700" y1="44" x2="700" y2="230" stroke="#1b3350" stroke-width="1" stroke-dasharray="2 4"/>
+        <text x="275" y="302" text-anchor="middle" class="mono" font-size="9" fill="#4cc9f0">NANOSECOND-FRAGILE</text>
+        <text x="565" y="302" text-anchor="middle" class="mono" font-size="9" fill="#ffb13d">MICROSECOND-FRAGILE</text>
+        <text x="850" y="302" text-anchor="middle" class="mono" font-size="9" fill="#37dfa0">MILLISECOND-FRAGILE</text>
+        <rect x="597.8" y="44" width="402.2" height="186" fill="rgba(255,73,95,.06)"/>
+        <line x1="120" y1="230" x2="1000" y2="230" stroke="#8ba3bf" stroke-width="1.2"/>
+        <g class="mono" font-size="8" fill="#5d7590" text-anchor="middle">
+          <line x1="120" y1="226" x2="120" y2="234" stroke="#5d7590"/><text x="120" y="248">1 ns</text>
+          <line x1="315.6" y1="226" x2="315.6" y2="234" stroke="#5d7590"/><text x="315.6" y="248">100 ns</text>
+          <line x1="413.3" y1="226" x2="413.3" y2="234" stroke="#5d7590"/><text x="413.3" y="248">1 &micro;s</text>
+          <line x1="511.1" y1="226" x2="511.1" y2="234" stroke="#5d7590"/><text x="511.1" y="248">10 &micro;s</text>
+          <line x1="608.9" y1="226" x2="608.9" y2="234" stroke="#5d7590"/><text x="608.9" y="248">100 &micro;s</text>
+          <line x1="706.7" y1="226" x2="706.7" y2="234" stroke="#5d7590"/><text x="706.7" y="248">1 ms</text>
+          <line x1="804.4" y1="226" x2="804.4" y2="234" stroke="#5d7590"/><text x="804.4" y="248">10 ms</text>
+          <line x1="902.2" y1="226" x2="902.2" y2="234" stroke="#5d7590"/><text x="902.2" y="248">100 ms</text>
+          <line x1="1000" y1="226" x2="1000" y2="234" stroke="#5d7590"/><text x="1000" y="248">1 s</text>
+        </g>
+        <g class="mono" font-size="8.5">
+          <line x1="120" y1="230" x2="120" y2="68" stroke="#4cc9f0" stroke-width="1" opacity=".55"/><circle cx="120" cy="230" r="3" fill="#4cc9f0"/><text x="126" y="64" fill="#4cc9f0">coherent radar (ps&ndash;ns)</text>
+          <line x1="315.6" y1="230" x2="315.6" y2="96" stroke="#4cc9f0" stroke-width="1" opacity=".55"/><circle cx="315.6" cy="230" r="3" fill="#4cc9f0"/><text x="321" y="92" fill="#4cc9f0">TDOA geolocation</text>
+          <line x1="522.3" y1="230" x2="522.3" y2="64" stroke="#ffb13d" stroke-width="1" opacity=".55"/><circle cx="522.3" cy="230" r="3" fill="#ffb13d"/><text x="516" y="60" text-anchor="end" fill="#ffb13d">telecom (2016)</text>
+          <line x1="552.4" y1="230" x2="552.4" y2="88" stroke="#ffb13d" stroke-width="1" opacity=".55"/><circle cx="552.4" cy="230" r="3" fill="#ffb13d"/><text x="558" y="84" fill="#ffb13d">PMU 1% TVE (26.5 &micro;s)</text>
+          <line x1="579.4" y1="230" x2="579.4" y2="116" stroke="#ffb13d" stroke-width="1" opacity=".55"/><circle cx="579.4" cy="230" r="3" fill="#ffb13d"/><text x="585" y="112" fill="#ffb13d">Link 16 fine sync</text>
+          <line x1="608.9" y1="230" x2="608.9" y2="144" stroke="#ffb13d" stroke-width="1" opacity=".55"/><circle cx="608.9" cy="230" r="3" fill="#ffb13d"/><text x="614" y="140" fill="#ffb13d">MiFID HFT log (100 &micro;s)</text>
+          <line x1="793.9" y1="230" x2="793.9" y2="76" stroke="#37dfa0" stroke-width="1" opacity=".55"/><circle cx="793.9" cy="230" r="3" fill="#37dfa0"/><text x="799" y="72" fill="#37dfa0">Link 16 slot &mdash; net drop</text>
+          <line x1="902.2" y1="230" x2="902.2" y2="104" stroke="#37dfa0" stroke-width="1" opacity=".55"/><circle cx="902.2" cy="230" r="3" fill="#37dfa0"/><text x="896" y="100" text-anchor="end" fill="#37dfa0">track fusion (v&middot;&Delta;t)</text>
+        </g>
+        <line x1="597.8" y1="40" x2="597.8" y2="230" stroke="#37dfa0" stroke-width="2"/>
+        <text x="597.8" y="32" text-anchor="middle" class="mono" font-size="9.5" fill="#37dfa0">BOUNDED &plusmn;77 &micro;s</text>
+        <line x1="624" y1="54" x2="980" y2="54" stroke="#ff495f" stroke-width="1.2" marker-end="url(#arrowR)"/>
+        <text x="804" y="48" text-anchor="middle" class="mono" font-size="9" fill="#ff495f">UNBOUNDED &delta; &mdash; attacker sets it, no ceiling</text>
+      </svg>
+    </div>
+    <div class="cap-strip">
+      <div class="lead">A timing error is only as bad as the tightest clock that consumes it.</div>
+      <p>Read left to right: an offset landing to the <b>right</b> of a system's mark exceeds that system's tolerance. Nanosecond-class consumers (emitter geolocation, coherent radar) break at any microsecond offset &mdash; bounded or not. Microsecond-class consumers (grid PMUs, tactical fine-sync, telecom) sit right at the boundary. Millisecond-and-coarser consumers (net slotting, track fusion, sonar) only feel a large offset. The green line is where the Schumann bound holds the clock; the red sweep is where an unchecked attacker walks it. Note where the bound falls: it is <b>not</b> left of everything &mdash; it still exceeds the PMU and geolocation budgets, which is why the next act's alarm matters as much as the bound.</p>
+    </div>
+  </div>
+
+  <div class="incidents rv">
+    <div class="ih">This is not hypothetical</div>
+    <p class="isub">Real timing disruptions, real operational impact &mdash; the mechanism above has already played out in the open.</p>
+    <div class="inc"><div class="when">26&ndash;27 JAN 2016<br>GPS SVN-23</div><div class="what">A decommissioned satellite pushed a <b>~13 &micro;s</b> UTC error onto part of the constellation for <b>13 h 45 m</b>. It knocked BBC digital radio off air and disrupted telecom networks &mdash; from thirteen microseconds.</div></div>
+    <div class="inc"><div class="when">22 JUN 2017<br>Black Sea</div><div class="what">Twenty-plus ships' GPS placed them at an airport <b>~32 km inland</b> while each receiver reported itself &ldquo;safe within 100 m.&rdquo; Confident, and wrong &mdash; the signature failure mode of a timing/position attack.</div></div>
+    <div class="inc"><div class="when">2012<br>UT Austin</div><div class="what">A spoofing experiment drove a phasor measurement unit past the IEEE C37.118 limit with a <b>few tens of &micro;s</b> and demonstrated a <b>false generator trip</b> &mdash; the grid consequence, in a lab.</div></div>
+  </div>
+
+  <!-- ================= ACT IV ================= -->
+  <div class="act violet rv">
+    <div class="num">IV</div>
+    <div class="lbl"><h2>The <span class="k">Signal Beneath</span></h2><p>There is a clock the adversary does not own &mdash; one that arrives by physics, not by fiber, and is the same everywhere on Earth.</p></div>
+  </div>
+
+  <!-- PANEL 6 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 09 &middot; THE EARTH IS RINGING</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 300" role="img" aria-label="The Earth-ionosphere cavity resonates at 6 to 25 Hz; both nodes see the same shared Schumann waveform.">
+        <path d="M-40 300 Q520 120 1080 300" fill="none" stroke="#1b3350" stroke-width="1.4"/>
+        <path d="M-40 250 Q520 70 1080 250" fill="none" stroke="#132538" stroke-width="1"/>
+        <text x="60" y="292" class="mono" font-size="9" fill="#5d7590">GROUND</text>
+        <text x="60" y="212" class="mono" font-size="9" fill="#5d7590">IONOSPHERE</text>
+        <path class="wv" d="M180 258 Q520 150 860 258" fill="none" stroke="#a98bff" stroke-width="1.6"/>
+        <path class="wv2" d="M240 262 Q520 176 800 262" fill="none" stroke="#a98bff" stroke-width="1.2" opacity=".7"/>
+        <path class="wv3" d="M300 266 Q520 200 740 266" fill="none" stroke="#a98bff" stroke-width="1" opacity=".5"/>
+        <path d="M520 150 L512 172 L522 172 L514 192" stroke="#ffb13d" stroke-width="1.6" fill="none"/>
+        <text x="540" y="160" class="mono" font-size="9" fill="#ffb13d">global lightning drives the cavity</text>
+        <g transform="translate(200,258)"><use href="#base" transform="scale(.7)"/></g>
+        <g transform="translate(840,258)"><use href="#sub" transform="scale(.7)"/></g>
+        <text x="520" y="40" text-anchor="middle" font-family="Oswald" font-size="20" fill="#a98bff" letter-spacing="1">SCHUMANN RESONANCE &middot; 6&ndash;25 Hz</text>
+        <text x="520" y="60" text-anchor="middle" class="mono" font-size="10" fill="#8ba3bf">one waveform, filling the whole Earth&ndash;ionosphere cavity at once</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>Lightning strikes tens of times a second, everywhere on the planet, and the gap between the ground and the ionosphere rings like a bell. That ringing &mdash; the Schumann resonance &mdash; is present at every point on Earth at the same instant. Two stations thousands of kilometers apart hear the <b>same</b> note.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>It's a globally shared, extremely-low-frequency magnetic signal in the 6&ndash;25 Hz band. No one transmits it, so no one can silently substitute it. Its cross-node coherence gives two separated receivers a common physical time reference that owes nothing to the packet network.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">B(t) shared, coherent across baseline L</div>
+        <div class="eqline">phase(f) common &forall; nodes, 6&ndash;25 Hz</div>
+        <p class="cap">The fiducial is a physical field, not a packet. To move it, an adversary would have to move the field itself at both nodes &mdash; not merely hold a message on a wire.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 7 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 10 &middot; THE FIDUCIAL RIDES IN THE CONTENT</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 250" role="img" aria-label="The timing reference is carried in message content, so delaying packet arrival does not move it.">
+        <rect x="360" y="90" width="320" height="70" rx="4" fill="#150e26" stroke="#a98bff" stroke-width="1.4"/>
+        <text x="520" y="82" text-anchor="middle" class="mono" font-size="9" fill="#a98bff">MESSAGE PAYLOAD</text>
+        <path class="wv" d="M380 125 q15 -18 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" fill="none" stroke="#a98bff" stroke-width="1.6"/>
+        <text x="520" y="150" text-anchor="middle" class="mono" font-size="9" fill="#8ba3bf">Schumann phase stamp travels INSIDE the bytes</text>
+        <g transform="translate(250,125)"><use href="#evilbox" transform="scale(.7)"/></g>
+        <text x="250" y="180" text-anchor="middle" class="mono" font-size="9" fill="#ff495f">delay the packet&hellip;</text>
+        <text x="790" y="122" text-anchor="middle" font-family="Oswald" font-size="16" fill="#37dfa0">&hellip;the reference<tspan x="790" dy="20">does not move.</tspan></text>
+        <path d="M690 125 L740 125" stroke="#37dfa0" stroke-width="1.4" marker-end="url(#arrow)"/>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>Here's the turn. The old reference lived in <b>when a packet arrived</b> &mdash; the one thing the delay box controls. The new reference lives in <b>what the message carries</b>: a stamp of the shared waveform. Hold the packet all you like; the note it captured already happened, identically, at both ends.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>Moving the fiducial out of the arrival-time domain and into message content severs it from transport-layer manipulation. Delay is an attack on timing; here the timing information is data, and delaying data doesn't change what the data says.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">&theta;&#770;&#8202;S = f( phase B(t) ) &mdash; <span class="c">independent of arrival</span></div>
+        <div class="eqline">&part;&theta;&#770;&#8202;S / &part;&delta; = 0</div>
+        <p class="cap">The Schumann-derived offset has zero sensitivity to inserted packet delay. That immunity is what makes the next panel possible.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ACT IV ================= -->
+  <div class="act green rv">
+    <div class="num">V</div>
+    <div class="lbl"><h2>The <span class="k">Catch</span></h2><p>Same adversary. Same &delta;. But now there are two clocks to compare &mdash; and the disagreement is exactly the attack.</p></div>
+  </div>
+
+  <!-- PANEL 8 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 11 &middot; TWO ESTIMATES DISAGREE</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 280" role="img" aria-label="The packet-derived offset shifts by delta over two while the Schumann-derived offset stays put; the residual equals the attack.">
+        <g transform="translate(140,110)"><use href="#base"/><text x="0" y="52" text-anchor="middle" class="mono" font-size="10" fill="#4cc9f0">COMMAND</text></g>
+        <g transform="translate(520,110)"><use href="#evilbox"/></g>
+        <g transform="translate(890,110)"><use href="#jet"/></g>
+        <g transform="translate(0,200)">
+          <text x="16" y="0" class="mono" font-size="9" fill="#5d7590">PACKET RAIL</text>
+          <line x1="140" y1="0" x2="1010" y2="0" stroke="#1b3350" stroke-width="1"/>
+          <line x1="565" y1="-7" x2="565" y2="7" stroke="#8ba3bf" stroke-width="1.2"/>
+          <line x1="700" y1="-9" x2="700" y2="9" stroke="#ff495f" stroke-width="2.4"/>
+          <text x="700" y="22" text-anchor="middle" class="mono" font-size="8" fill="#ff495f">shifted +&delta;/2</text>
+        </g>
+        <g transform="translate(0,250)">
+          <text x="16" y="0" class="mono" font-size="9" fill="#5d7590">SCHUMANN RAIL</text>
+          <line x1="140" y1="0" x2="1010" y2="0" stroke="#1b3350" stroke-width="1"/>
+          <line x1="565" y1="-9" x2="565" y2="9" stroke="#a98bff" stroke-width="2.4"/>
+          <text x="565" y="22" text-anchor="middle" class="mono" font-size="8" fill="#a98bff">unmoved</text>
+        </g>
+        <line x1="565" y1="200" x2="565" y2="250" stroke="#ffb13d" stroke-width="1" stroke-dasharray="2 3"/>
+        <line x1="565" y1="180" x2="700" y2="180" stroke="#ffb13d" stroke-width="1.4" marker-start="url(#dimtick)" marker-end="url(#dimtick)"/>
+        <text x="632" y="174" text-anchor="middle" class="mono" font-size="11" fill="#ffb13d">residual r = &delta;/2 &mdash; now VISIBLE</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>The box does exactly what it did in Act II &mdash; and this time it leaves a fingerprint. The network clock says one thing; the Earth's clock says another. The distance between them isn't noise. It <b>is</b> the attack, made measurable for the first time.</p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>Subtract the two offset estimates. The packet estimate carries the &delta;/2 pull; the Schumann estimate doesn't. The blind subspace from Panel 04 is no longer blind, because the second reference lies <b>outside</b> it &mdash; it supplies the missing equation.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">r = &theta;&#770;&#8202;pkt &minus; &theta;&#770;&#8202;S = <span class="g">&delta;/2</span></div>
+        <p class="cap">The residual is the previously-aliased term, now standing on its own. One outside observable collapses an (n&minus;1) blind space to something you can watch.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 9 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 12 &middot; THE DETECTOR FIRES</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 250" role="img" aria-label="A CUSUM detector accumulates the residual and crosses its threshold, raising an integrity alarm.">
+        <line x1="120" y1="200" x2="1000" y2="200" stroke="#1b3350" stroke-width="1"/>
+        <line x1="120" y1="40" x2="120" y2="200" stroke="#1b3350" stroke-width="1"/>
+        <text x="112" y="36" text-anchor="end" class="mono" font-size="9" fill="#8ba3bf">S(k)</text>
+        <text x="1000" y="216" text-anchor="end" class="mono" font-size="9" fill="#8ba3bf">time &rarr;</text>
+        <line x1="120" y1="88" x2="1000" y2="88" stroke="#ff495f" stroke-width="1" stroke-dasharray="5 4"/>
+        <text x="128" y="82" class="mono" font-size="9" fill="#ff495f">alarm threshold h</text>
+        <path d="M120 198 L360 196 L420 190 L480 172 L540 146 L600 118 L660 92 L700 80" fill="none" stroke="#37dfa0" stroke-width="2"/>
+        <circle cx="682" cy="86" r="5" fill="none" stroke="#ff495f" stroke-width="1.6"/>
+        <line x1="682" y1="86" x2="682" y2="40" stroke="#ff495f" stroke-width="1" stroke-dasharray="2 3"/>
+        <text x="700" y="52" class="mono" font-size="11" fill="#ff495f">&#9670; INTEGRITY ALARM</text>
+        <text x="240" y="188" class="mono" font-size="9" fill="#8ba3bf">quiet under normal residual&hellip;</text>
+        <text x="500" y="132" class="mono" font-size="9" fill="#37dfa0" transform="rotate(-24 500 132)">&hellip;accumulates the &delta;/2 bias&hellip;</text>
+      </svg>
+    </div>
+    <div class="bands">
+      <div class="band b-story"><div class="bt">Story</div><p>Small, steady disagreements don't panic the system &mdash; it expects a little jitter. But a persistent one-sided pull builds up, and once it clears the line, the operator gets what the whole network could never give in Act II: a clear, early <b>"your time is being tampered with."</b></p></div>
+      <div class="band b-sys"><div class="bt">System</div><p>A CUSUM change-detector accumulates the residual and trips at a threshold set for a chosen false-alarm rate. And if the reference itself is jammed or lost, coherence simply drops &mdash; which registers as an integrity event, not a missed alarm. The failure mode is safe.</p></div>
+      <div class="band b-alg"><div class="bt">Algebra</div>
+        <div class="eqline">S&#8202;k = max(0, S&#8202;k&minus;1 + (r&#8202;k &minus; b))</div>
+        <div class="eqline">alarm when S&#8202;k &ge; <span class="r">h</span></div>
+        <p class="cap">Detection delay scales with log(mean-time-to-false-alarm)/bias. A sustained &delta;/2 is exactly the bias this test is built to catch.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 10 -->
+  <div class="panel rv">
+    <div class="pnum">PANEL 13 &middot; THE DAMAGE IS BOUNDED</div>
+    <div class="stage">
+      <svg viewBox="0 0 1040 250" role="img" aria-label="Instead of unbounded silent drift, the residual is clamped inside a finite bound of tens of microseconds.">
+        <g transform="translate(0,130)">
+          <text x="16" y="0" class="mono" font-size="9" fill="#5d7590">OFFSET RAIL &mdash; CLAMPED</text>
+          <line x1="140" y1="0" x2="1000" y2="0" stroke="#1b3350" stroke-width="1"/>
+          <line x1="500" y1="-8" x2="500" y2="8" stroke="#8ba3bf" stroke-width="1.4"/><text x="500" y="26" text-anchor="middle" class="mono" font-size="8" fill="#8ba3bf">TRUE</text>
+          <line x1="440" y1="-26" x2="560" y2="-26" stroke="#37dfa0" stroke-width="1.6" marker-start="url(#dimtick)" marker-end="url(#dimtick)"/>
+          <rect x="440" y="-16" width="120" height="32" fill="rgba(55,223,160,.08)" stroke="#37dfa0" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="500" y="-32" text-anchor="middle" class="mono" font-size="10" fill="#37dfa0">bounded &plusmn; &sigma;_&tau;</text>
+          <line x1="560" y1="0" x2="960" y2="0" stroke="#ff495f" stroke-width="1" stroke-dasharray="2 5" opacity=".5"/>
+          <text x="820" y="-10" text-anchor="middle" class="mono" font-size="9" fill="#ff495f" opacity=".7">&hellip;where the silent drift would have gone &rarr;</text>
+        </g>
+        <g font-family="JetBrains Mono" font-size="11">
+          <text x="180" y="205" fill="#37dfa0">&sigma;_&tau; &asymp; 77 &micro;s @ 6 h</text>
+          <text x="420" y="205" fill="#37dfa0">worst-case commodity node &asymp; 184 &micro;s</text>
+          <text x="760" y="205" fill="#8ba3bf">finite &mdash; not unbounded</text>
+        </g>
+      </svg>
+    </div>
+    <div class="cap-strip">
+      <div class="lead">From unbounded and invisible &rarr; bounded and flagged.</div>
+      <p>The literature's own conclusion was that no bound was derivable from the node's observables. With the outside reference, anything below the detection floor is held to a finite envelope &mdash; tens of microseconds in these measurements &mdash; and anything above it raises an alarm. That trade, silence for a bound, is the entire contribution.</p>
+    </div>
+  </div>
+
+  <!-- ================= EPILOGUE ================= -->
+  <div class="act rv">
+    <div class="num">VI</div>
+    <div class="lbl"><h2>The Honest <span class="k">Ledger</span></h2><p>What changed, what didn't, and the word that matters: mitigation, not elimination.</p></div>
+  </div>
+
+  <div class="ledger rv">
+    <div class="lhead">
+      <div>Property</div>
+      <div class="h-un">Unmitigated PTP</div>
+      <div class="h-mit">With Schumann monitor</div>
+    </div>
+    <div class="lrow"><div class="k">Attack visibility</div><div class="un">Invisible &mdash; passes every packet-domain test</div><div class="mit">Residual r = &delta;/2 becomes directly observable</div></div>
+    <div class="lrow"><div class="k">Clock error</div><div class="un">Unbounded silent drift (grows with &delta;)</div><div class="mit">Bounded &plusmn; &sigma;_&tau; below floor; alarm above</div></div>
+    <div class="lrow"><div class="k">Detection</div><div class="un">None &mdash; no fault is ever raised</div><div class="mit">CUSUM alarm at chosen false-alarm rate</div></div>
+    <div class="lrow"><div class="k">Reference denial</div><div class="un">n/a &mdash; nothing to deny</div><div class="mit">Coherence loss &rArr; integrity event (fails safe)</div></div>
+    <div class="lrow"><div class="k">Theoretical status</div><div class="un">Blind subspace, dim n&minus;1 (FGK)</div><div class="mit">Outside observable supplies the missing equation</div></div>
+    <div class="lrow"><div class="k">Tightest consumers</div><div class="un">Silently corrupted (TDOA, coherent radar, PMU)</div><div class="mit">Held error still exceeds their ns&ndash;&micro;s budget &mdash; but the attack is now flagged</div></div>
+  </div>
+
+  <div class="caveat rv">
+    <h3>Where the threat relocates &mdash; read this before you believe it</h3>
+    <p style="color:var(--dim);margin:0;font-size:.92rem">The monitor is a genuine defense, not a force field &mdash; and honesty requires naming its limits:</p>
+    <ul>
+      <li><b>The bound is not a universal &ldquo;safe.&rdquo;</b> The held residual (~77 &micro;s) still exceeds nanosecond-class tolerances (emitter geolocation, coherent radar) and even the PMU 1%-TVE budget (26.5 &micro;s). For those consumers the protection is the <b>integrity alarm</b>, not the bound &mdash; and detection fires on a bias far finer than the microsecond-scale channel floor (the channel estimation bound &sigma;<sub>&tau;</sub> and the detector&rsquo;s pre-alarm bias &theta;<sub>det</sub> differ by ~3 orders of magnitude).</li>
+      <li><b>Sub-threshold delay.</b> An adversary who stays under the detection floor is not caught &mdash; but is held to the finite bound instead of running the clock away freely. The floor is the price; the bound is the payoff.</li>
+      <li><b>Matched near-field injection.</b> An attacker who reproduces the shared field at the node with the right phase can survive loop closure. This doesn't defeat the idea &mdash; it <b>relocates</b> the attack from a remote wire tap to physical near-field access at the site.</li>
+      <li><b>Denial, not deception.</b> Jamming or removing the signal doesn't forge a false "now"; it removes coherence, which the monitor reports as a fault. Loss of the reference is a detected event, not a bypass.</li>
+    </ul>
+  </div>
+
+  <div class="close rv">
+    <div class="big">You cannot <span class="un">eliminate</span><br>the delay attack.<br>You can <span class="mit">bound</span> it,<br>and <span class="mit">see</span> it.</div>
+    <p>The wire is blind by theorem. The signal beneath it is not owned by the adversary. Put the timing fiducial where delay can't reach &mdash; in the content, in the physics &mdash; and the invisible becomes a number you can watch cross a line.</p>
+  </div>
+
+  <div class="refs rv">
+    <div class="rh">Sources &amp; further reading</div>
+    <span>TDOA &rarr; position error (300 m/&micro;s), GDOP amplification: standard emitter-geolocation references (Anritsu TDOA note; Langley, <i>GPS World</i>, 1999).
+    &middot; PMU 1% TVE = 26.5 &micro;s @ 60 Hz: IEEE C37.118.1; synchrophasor timing analyses (MERL TR2019-023).
+    &middot; PMU spoofing &rarr; false trip: Shepard, Humphreys &amp; Fansler, <i>Int'l J. Critical Infrastructure Protection</i>, 2012.
+    &middot; Link 16 / JTIDS slot (7.8125 ms), fine sync, &lt;20 ns relative-nav: JTIDS synchronization literature.
+    &middot; Underwater sound ~1500 m/s (1.5 mm/&micro;s): acoustic-ranging references (Nature <i>Comms Eng.</i>, 2025).
+    &middot; GPS SVN-23 UTC event (26&ndash;27 Jan 2016, ~13 &micro;s): NIST (Lombardi et al.); BBC reporting.
+    &middot; Black Sea GPS displacement (22 Jun 2017, ~32 km): US MARAD advisory 2017-005.
+    &middot; Stealthy PTP delay attack (500 &micro;s / 10.8&deg; over 12 h without alarm): KAIST, <i>ACM TOPS</i>, 2025.
+    &middot; PTP delay-attack framework &amp; defenses: Mizrahi (ISPCS 2012); PTPsec (INFOCOM 2024).
+    &middot; Identifiability limit (offsets &amp; delays to within an (n&minus;1) subspace): Freris, Graham &amp; Kumar, <i>IEEE TAC</i>, 2011.</span>
+  </div>
+
+  <div class="foot">
+    THE SILENT SHIFT &middot; TIME-INTEGRITY FIELD MANUAL &middot; &theta;&#770; = &theta; + &delta;/2 &middot; SCHUMANN 6&ndash;25 Hz &middot; INDEPENDENT RESEARCH
+  </div>
+
+</div>
+
+<script>
+(function(){
+  if(!('IntersectionObserver' in window)){
+    document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in');});
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>

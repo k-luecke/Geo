@@ -1,0 +1,1161 @@
+SUBMITTED MANUSCRIPT
+
+1
+
+Time Integrity from a Shared Geophysical Signal:
+Cross-Node Correlation and Sequential Detection
+of Delay Attacks
+Kyle Luecke
+
+Abstract—Two-way time transfer is rank deficient: one exchange measures the sum of the forward and reverse path
+delays, but only their difference enters the offset estimate, so an
+adversary delaying one direction by δ shifts the estimated offset
+by δ/2 while every packet stays cryptographically authentic.
+We close the gap with a globally excited, spatially correlated
+geophysical signal, the 6 to 25 Hz Schumann band, recorded
+independently at each node and exchanged inside authenticated,
+acquisition-timestamped records, so that the timing fiducial rides
+in message content and out of reach of transport delay. Fitted
+mode parameters on a four-year record give a 90 s integrity
+floor; the raw waveform supports 12 to 363 µs at assumed unity
+coherence. We then replace assumption with measurement. Public
+magnetometer records from observatories 3002 km apart show
+fundamental-mode coherence that survives a pre-declared null
+battery and disjoint-epoch replication, bounding offset precision
+at 184 µs per day through a facility sensor noisier than the signal.
+A matched-sensor test, frozen and hash-deposited before the data
+were seen, confirmed its preregistered prediction, with coherence
+rising fifty-fold inside a forecast window of thirty to one hundred,
+for a measured 76.6 µs bound at six hours and a projected 38 µs at
+one day. A separately preregistered lag-stability criterion was not
+met: the lag is detected in nearly every window but wanders with
+source geometry, a measured limitation retained for the named
+follow-on rather than relaxed. Against slow attacks,
+sequential
+√
+detection limits pre-alarm bias to θdet = (κσ 3∆t)2/3 r1/3 , so
+patience buys the adversary less, not more. Every empirical claim
+in this paper is bound to a public preregistration hash.
+Index Terms—Clock synchronization, delay attack, IEEE 1588,
+physical-layer security, Schumann resonance, sequential detection, time transfer.
+
+I. I NTRODUCTION
+ACKET-BASED time transfer under IEEE 1588 (PTP) secures message integrity but not message timing. Section II
+shows the vulnerability is algebraic, not implementational: the
+two-way exchange cannot separate path asymmetry from clock
+offset, so a delay attack forges nothing and breaks no key.
+Four known remedies exist, being a second disjoint path, a
+holdover clock, an engineered-reciprocal medium, and out-ofband radio time. Each assumes a resource some nodes lack;
+Section II-C states the condition each one requires and the
+theorem that condition traces to. The unserved node is singlehomed, carries a commodity oscillator, and sits where GNSS
+is denied, jammed, or indoors.
+The architecture analyzed here needs four properties of
+its reference signal, none specific to the Schumann band:
+
+P
+
+The author is an independent researcher (e-mail: k2luecke@gmail.com).
+Analysis code, preregistration text, and run artifacts are on public deposit;
+see Appendix A.
+
+R1, global availability without infrastructure; R2, bandwidth
+sufficient for the target precision; R3, spatial coherence at deployment baselines; and R4, infeasibility of coherent forgery at
+scale. Mains phase fails R1 across interconnects; geomagnetic
+pulsations fail R2; sferic time-of-arrival methods require perevent association. The Schumann band survives all four filters,
+and Section II-E reads the alternatives against the same list.
+Each node timestamps acquisition with its own clock and
+transmits Mi = AuthK (H[xi ], tacq
+i , ni ), where H is a
+collision-resistant hash and ni a sequence number. The trusted
+boundary is acquisition: everything formed after Mi , including
+queueing, routing, and deliberate delay, leaves Mi unchanged.
+Altering the record, its timestamp, or its ordering is a forgery
+in the cryptographic sense, and replay fails the sequence check.
+The delay attack therefore holds an object it cannot edit.
+A. Contributions
+1) An identifiability analysis locating the delay attack in
+the null space of two-way time transfer (Section II-A).
+2) Quantification of achievable offset precision in two
+observation domains of the shared signal, with a measured parameter-domain floor (Section IV-A) and an
+information-theoretic waveform bound (Section IV-B).
+3) A sequential-detection result, with proof, showing accumulated bias before detection scales as the cube root
+of the attack rate, and with its flicker-noise boundary
+disclosed (Section III-D; calibrated in Section IV-C).
+4) Measured cross-continental coherence at 3002 km from
+public data, a pre-declared null battery (Section IV-D),
+and a frozen, hash-deposited protocol whose quantitative
+prediction was confirmed at fifty times, inside a preregistered window of thirty to one hundred (Section IV-F).
+5) A threat-model decomposition in which cryptography
+answers forgery and physics answers delay, with neither
+alone covering both (Section III-A).
+II. L ITERATURE R EVIEW
+A. The Exchange is Rank Deficient
+The PTP exchange records (t1 , t2 , t3 , t4 ) and estimates
+θ̂ = 21 [(t2 − t1 ) − (t4 − t3 )] = θ + 12 (dM S − dSM ) .
+
+(1)
+
+One equation, two unknowns. Only the difference of the
+path delays is observable, and the symmetric-path assumption
+dM S = dSM is what converts the measurement into an offset.
+An on-path adversary inserting δ into one direction shifts θ̂
+
+SUBMITTED MANUSCRIPT
+
+2
+
+by δ/2. Nothing in the packet changes; MACs and signatures
+verify; the attack lives entirely in the unprotected physical
+observable of arrival time.
+Equation (1) organizes the review that follows. Every defense surveyed below attempts to recover the missing rank
+from inside the exchange, and each carries a precondition that
+follows from what it must observe in order to do so.
+
+Sync messages applied to the clock with no corresponding
+measurement, admitting the same evasion. The recommended
+countermeasure, end-to-end measurement at the full Sync rate
+with the clock update deferred to Delay_Resp, restores the
+coupling but not the rank: it makes a threshold meaningful in
+those cases where a valid threshold exists at all.
+
+B. The Vulnerability is Demonstrated, Not Hypothetical
+
+D. State of the Art
+
+Barreto et al. built a hardware delay box that advances or
+retards a slave clock by a few microseconds, and reported
+it undetectable both from the protocol’s perspective and by
+the slave’s clock-servo algorithm, independent of the cryptographic protection in use [3]. Finkenzeller et al. subsequently
+demonstrated static and incremental variants against PTP at
+microsecond precision on a testbed [7].
+Encryption does not close the gap. Annessi et al. showed
+that statistical traffic analysis identifies PTP messages inside
+IPsec-, MACsec-, or TLS-protected traffic well enough to
+support selective delay, and identified the underlying conflict:
+the deterministic traffic pattern that makes a synchronization
+protocol precise is the same pattern that makes its packets
+identifiable for selective delay [4]. Obfuscation trades precision for concealment in both directions.
+
+The state of the art has not moved off these preconditions.
+PTPsec [8] is the most complete treatment. It entangles
+detection with synchronization by invoking a measurement
+packet on every PTP event message, derives cyclic roundtrip asymmetry over redundant paths, integrates into IEEE
+1588-2019 [10], and detects both static and incremental attacks
+on hardware within a few synchronization intervals. Its own
+stated condition is that redundant paths be available in the
+network, and the authors note this is already enforced by
+standards such as TSN, which is precisely the deployment
+class the unserved node of Section I is not in. The 2025 journal
+extension reinforces the point rather than relaxing it [9]: it adds
+software-defined networking for dynamic topology discovery, redundant-path management, and deterministic routing,
+machinery whose necessity is itself a measure of what the
+redundancy precondition costs to satisfy. The 2012 conditions
+therefore still bound the current art; what has changed is the
+quality of the defense available to nodes that can already meet
+them.
+Patching PTP cannot repair rank deficiency. That the missing information must come from outside the protocol is not
+a new claim: Barreto et al. stated it as the conclusion of the
+delay-box work [3], and Annessi et al. reached it independently [4], adding that knowledge of one-way delays and of
+the physical constraints of the network is what would permit
+a guaranteed bound on slave offset. This paper contributes
+not the diagnosis but a specific exterior: a reference that is
+globally available, requires no infrastructure, is not carried by
+the network, and admits a measured rather than assumed bound
+(Section IV). In the terms above, the claim is an enlargement
+of SB , not a better element of it.
+
+C. Packet-Domain Defenses and Their Preconditions
+Mizrahi’s game-theoretic treatment makes the boundary of
+the existing design space explicit [1]. An attacker chooses
+insertion delays (δM S , δSM ); a defending process decides, at
+the end of each exchange, whether to accept or discard it. The
+defender’s strategy set is SB = {f | f : R4 → {Pass, Drop}},
+the space of functions of the four timestamps and nothing else.
+That definition, rather than any particular f , is what the present
+architecture contests. Round-trip thresholding, multiple clock
+sources, and path redundancy are three choices of f ; all three
+read arrival times, and (1) is the statement that arrival times
+do not contain the missing rank.
+Each choice of f carries a sharp precondition, summarized
+in Table I.
+The threshold condition is Mizrahi’s: a drop threshold
+DRT admits an equilibrium only when 2εmax ≤ DRT ≤
+∆ERR + 2εmin for delays confined to [εmin , εmax ]. That is,
+only when the accuracy requirement exceeds twice the delay
+spread, which is satisfiable in a low-variance single-hop setting
+such as an 802.1AS bridged network but not in the wide-area
+case. Path redundancy inherits N > 3m from Lamport and
+Melliar-Smith [2], and the accompanying bound on residual
+error of the surviving paths is, by its author’s own statement,
+not strictly a formal claim but rather an intuition.
+PTP is weaker here than NTP. Round-trip detection depends
+on time distribution and delay measurement being coupled
+within one exchange, as they are in NTP; PTP does not
+guarantee that coupling. Under the peer-to-peer variant the
+Pdelay handshake is independent of the Sync messages that
+carry time, so an adversary who delays only Sync leaves
+the measured path delay untouched. Under end-to-end, the
+standard permits Delay_Req at a lower rate than Sync, leaving
+
+E. Alternative Reference Signals
+Read against R1–R4, the candidate exteriors sort as follows. Mains phase is regional and fails R1 across interconnects, demonstrated incidentally by the grid-based null
+in Section IV-D. Geomagnetic pulsations and the millihertz
+geomagnetic art [21] lack bandwidth for sub-millisecond work
+and fail R2. Sferic time-difference-of-arrival methods [22]
+require per-event association and share the source-geometry
+systematic without the continuous integrability of the resonant
+band. GNSS is the out-of-band remedy whose denial defines
+the unserved node.
+The Schumann band [18], [19] is not argued to be unique.
+It is the candidate that currently survives all four filters, and
+the architecture accepts any reference that does.
+
+SUBMITTED MANUSCRIPT
+
+3
+
+TABLE I
+PACKET- DOMAIN DEFENSES AND THE PRECONDITION EACH REQUIRES
+Class
+
+Mechanism
+
+Precondition
+
+Where it fails
+
+Threshold
+
+compare dRT to a bound
+
+Guard / report
+
+monitor node, or timestamped
+reports to a reference
+compare asymmetry across N
+paths
+correlate a global field carried
+in message content
+
+∆ERR ≥ 2(εmax − εmin ), and dRT must
+move under attack
+report traffic indistinguishable from protocol
+traffic
+N > 3m verified-disjoint paths
+
+wide-area delay spread; dRT need not change
+at all
+attacker distinguishes custom event messages
+and treats them differently
+single-homed node; disjointness unverifiable
+(Sec. V-B)
+measured envelope (Sec. IV, V-C)
+
+Path redundancy
+Shared reference
+(this work)
+
+in-band sensor meeting R1–R4 (Sec. I)
+
+TABLE II
+E RROR BUDGET FOR (3)
+Term
+
+Per event After 1 h
+
+Bulk geometry
+Source location
+(50 km)
+Dispersion residual
+Day–night asymmetry
+Timestamp / DAQ
+
+Character
+
+2.2 ms subtracted
+220 µs 5 µs
+
+deterministic
+statistical
+
+≤ 163 µs ∝ N −1/2
+— not averaged
+inst. dep. inst. dep.
+
+statistical
+systematic
+systematic
+
+Per-event geometry and dispersion figures are per 500 km of effective path
+difference. Averaging assumes about 1800 events per hour.
+
+III. M ETHODOLOGY
+A. Architecture: a Fiducial in Content, Not Arrival
+1) Observation model: Both nodes observe filtered, delayed, noisy copies of one realization of the cavity field s(t):
+xA (t) = (hA ∗ s)(t − θA ) + nA (t),
+
+(2)
+
+and likewise at B. The realization, not the mode parameters, is
+the fiducial; the parameters only set how much of it is usable.
+2) Exchange: Records are exchanged as authenticated objects Mi . A network adversary can delay the arrival of MA
+arbitrarily; the waveform inside, and its bound acquisition
+timestamp, do not move. Cross-correlating the records recovers
+d(S, A) − d(S, B)
+,
+(3)
+τ̂AB = θAB +
+v(f )
+where S is the effective source region and v(f ) the mode
+group velocity, 0.742 to 0.800 of c across the band [17]. The
+propagation term is geometry: roughly 2.2 ms per 500 km of
+effective path difference in bulk, with dispersion contributing
+up to 163 µs per 500 km before single-parameter dedispersion.
+3) Error budget: Statistical terms divide down with event
+count; systematic terms do not. The day–night asymmetry
+survives averaging and must be carried explicitly (Table II).
+4) Coherent forgery at scale: Reproducing the cavity realization at one victim sensor requires a local field matching
+the global one in band. Doing so consistently across geographically separated verifiers requires either planetary-scale
+source power injected into a cavity of quality factor Q ≈ 4, or
+physical capture of every sensor, at which point the adversary
+has capabilities against which no timing protocol is a defense.
+Forgery of the record is the MAC’s job; forgery of the global
+field is priced by physics.
+
+5) Local injection: The preceding argument prices global
+forgery and does not dispose of a local one. An adversary with
+physical proximity to a single sensor can receive the in-band
+field and re-radiate a delayed copy into that sensor’s near field.
+The natural field is 0.1 to 1 pT in band, so the power required
+is not exotic; the requirement is proximity, not scale.
+Such an injection is not merely undetected. Adding δ at the
+sensor of node A adds δ to τ̂AB , which is indistinguishable
+from θAB having shifted by δ. It is precisely the signature
+the verifier is built to read as a clock offset, so the monitor
+would issue a correction in the adversary’s favour. Nor does
+adding nodes help: an injection at one node perturbs every pair
+through that node identically and therefore cancels in any loop
+sum, so a three-node closure test is blind to it by the same
+rank deficiency that (1) describes. A causal repeater can only
+delay and never advance, but the constraint binds per node
+rather than globally: (3) is antisymmetric in A and B, so an
+adversary who can choose which site to reach can produce
+either sign.
+Four discriminants remain, and they are partial. Amplitude,
+since a re-radiator must dominate the natural field locally
+rather than merely add to it, and a partial-amplitude injection
+sums with the real field and appears as structure in the crossspectrum. Near-field polarization geometry, since a local loop
+presents a field structure that a multi-axis sensor sees differently from the cavity’s horizontal-mode structure, which is the
+same physics as the vertical-coil null of Section IV-D. Ramp
+detection, since a growing injection is what Section III-D is
+for. And sustained physical access.
+A static, well-matched injection installed at commissioning
+defeats all four. The honest statement of what the architecture
+achieves is therefore a relocation rather than an elimination: a
+remote on-path network adversary is converted into an on-site
+radio-frequency adversary, with a correspondingly different
+and considerably more expensive access requirement. That is
+a real security improvement and it is not the same claim as
+unforgeability.
+6) Division of labour: Forge the global field, and sourcepower physics prices it. Forge the record or its timestamp,
+and authentication catches it. Replay, and sequence numbers
+catch it. Delay in transport, and correlation reads content
+rather than arrival. Creep below a threshold, and Section III-D
+bounds the gain. Inject locally, and the residual above stands.
+Cryptography and physics each cover the column the other
+cannot.
+
+SUBMITTED MANUSCRIPT
+
+4
+
+B. Parameter-Domain Estimation
+Mode parameters, being frequencies, amplitudes, and quality factors, are fitted to a four-year Sierra Nevada record of
+201534 ten-minute records [20], and parameter agreement is
+used as a cross-node check. The archival cadence is ten minutes, and the measured spectrum implies a process correlation
+scale of about fourteen minutes; both bear on the floor reported
+in Section IV-A.
+C. Waveform-Domain Bound
+Offset recovery is treated as passive time-delay estimation
+over the whitened 6 to 25 Hz band. The Weiss–Weinstein
+and Quazi small-error bound applies, with effective bandwidth
+β ≈ 13 Hz inside B = 19 Hz. The general bound evaluated
+throughout is
+−1/2
+ Z 25
+γ 2 (f )
+df
+,
+(4)
+στ (T ) = 2T
+(2πf )2
+1 − γ 2 (f )
+6
+evaluated with the measured, bias-corrected γ 2 (f ).
+Where Section IV evaluates (4) with canonical coherence,
+the quantity should be read as a Carter-style information
+bound [11] on the dominant coherent mode of the two-vector
+system. It is a defensible lower bound on the total available
+timing information, since canonical γ 2 is the coherence of one
+optimized linear combination. The exact multi-input multioutput generalization is not derived here; see Section V-D,
+route 8.
+D. Sequential Detection
+A static threshold invites the parking attack: ramp to just
+beneath the alarm line and hold there indefinitely. Ratedependent first-crossing values run from 171 to 420 ns across
+the tested range. Sequential detection on the offset innovation
+changes the economics.
+Proposition 1. Let the adversary ramp the offset at constant
+rate r against an innovation sequence of scale σ sampled at
+cadence ∆t, and let the detector alarm when the accumulated
+signal-to-noise ratio of a ramp hypothesis reaches κ. Then the
+bias accumulated before detection is
+ √
+2/3
+r1/3 .
+(5)
+θdet = κσ 3∆t
+Proof: Sample the ramp at ti = i ∆t for i = 1, . . . , N , so
+the deterministic component is si = r i ∆t. The matched-filter
+energy is
+E=
+
+N
+X
+i=1
+
+s2i = r2 ∆t2
+
+N (N + 1)(2N + 1)
+r2 ∆t2 N 3
+−→
+6
+3
+
+for large N . Against white innovations of variance σ 2 , the
+accumulated signal-to-noise ratio is E/σ 2 , and the alarm
+condition E/σ 2 = κ2 gives N 3 = 3κ2 σ 2 /(r2 ∆t2 ). Writing
+T = N ∆t,
+1/3
+1/3 1/3
+3κ2 σ 2 ∆t
+T =
+,
+θdet = rT = 3κ2 σ 2 ∆t
+r ,
+2/3
+r
+which is (5).
+
+The bias accumulated before detection therefore falls as the
+attack slows: halving r buys only a 21 % smaller pre-detection
+bias. Calibration is in Section IV-C.
+Remark 1 (Disclosed boundary). The proof assumes white
+innovations. Under flicker-type innovations, in the measured
+spectral exponent regime of 0.107, the advantage is bounded
+rather than eliminated: accumulated signal-to-noise grows
+more slowly than the T 3/2 implied by E ∝ N 3 , and the cuberoot law softens. Route 5 of Section V-D treats detector design
+under 1/f as an open problem. Note also that κ is a threshold
+in signal-to-noise units, so at fixed false-alarm rate it depends
+on the effective number of independent samples and hence
+on the innovation autocorrelation; Section V-A takes up the
+consequences.
+E. Instrument
+A single-axis induction coil with a low-noise preamplifier,
+sampled at a few hundred hertz against a GPS-disciplined or
+holdover-disciplined ADC clock, suffices to record the band.
+The vault magnetometers used below represent the low-noise
+end of the same commodity class. Sensor self-noise enters (4)
+only through γ 2 (f ).
+F. Data
+The Gravitational Wave Open Science Center (GWOSC)
+auxiliary-channel releases [15], [16] include magnetometers
+at the LIGO Hanford (H1) and Livingston (L1) observatories,
+3002 km apart, with GPS-disciplined timestamps. They constitute an accidental two-node testbed. Schumann-band content
+in these channels is independently documented in the detectorcharacterization literature [13], [14].
+The pilot uses the GW170814 three-hour auxiliary release:
+2.63 h of coincident data in two disjoint epochs on 201708-14. Livingston provides a low-noise vault magnetometer
+of the class deployed for Schumann monitoring; Hanford, in
+that release, provides only facility fluxgates whose self-noise
+exceeds the cavity signal several-fold. The pairing is a worstcase sensor test, and every pilot coherence reported below is
+a lower bound on what matched sensors achieve.
+The follow-on uses the O3 auxiliary release, which carries
+vault magnetometers at both sites, at 4096 Hz via NDS2.
+G. Estimators and Bias Handling
+Magnitude-squared coherence is computed by Welch’s
+method with 16 s Hann segments at 50 % overlap. Two bias
+references are reported side by side: the analytic 1/N floor,
+and an empirical null from pre-declared off-band windows.
+Detection is scored as excess over the empirical null in units
+of its scatter.
+Sensor axes at the two sites are not aligned, so scalar pair
+coherence understates field coherence. The primary statistic is
+therefore the canonical coherence
+ −1
+
+2
+−1
+γcan
+(f ) = λmax Sxx
+Sxy Syy
+Syx
+(6)
+over the two-axis records: rotation-invariant, standard in magnetotellurics, and fixed a priori, which distinguishes it from
+
+SUBMITTED MANUSCRIPT
+
+selecting whichever scalar pair produces the largest peak. The
+full 2 × 2 scalar-pair matrix and its maximum are reported as
+secondary.
+Canonical coherence carries a larger finite-sample bias
+than single-pair magnitude-squared coherence. Correction is
+therefore subtraction of the measured empirical off-band null
+mean, not an analytic floor, and every bound is reported for
+both raw and corrected values. The verdict category is required
+to agree between them; disagreement is declared SENSITIVE.
+Every corrected coherence quoted in Section IV is the raw
+value less the off-band null mean stated alongside it. Null and
+surrogate construction, and the reasoning behind each choice,
+are in Appendix A-B.
+H. Preregistration
+The O3 analysis was frozen before any O3 sample was
+seen. The frozen text declares five gates, their thresholds, the
+surrogate constructions, and a pre-declared reading for every
+pass–fail branch including branches that did not occur. It was
+frozen as executable code rather than as a description of intent,
+so declared thresholds cannot drift after data are seen without
+changing the deposited hash, and the executing build records
+that hash in its output. Three rounds of external adversarial
+review preceded the freeze. Thresholds appear in the first
+column of Table III; governance rationale, construction detail,
+branch readings, and the full artifact chain are in Appendix A.
+IV. R ESULTS
+A. Parameter-Domain Floor
+Using parameter agreement as a cross-node check yields an
+offset floor of 90 s. The floor is set by the process correlation
+scale of about fourteen minutes implied by the measured
+spectrum, and is not improved by longer integration.
+[Author decision: choose one mechanism and verify against
+residuals. (a) Cadence-limited: the floor is consistent with the
+interpolation limit of the ten-minute archival cadence, since
+about 0.15 of the 600 s interval reproduces 90 s; under this
+reading a faster-cadence record lowers it. (b) Systematiclimited: the residual is dominated by a station-dependent diurnal systematic, with the fourteen-minute scale setting where
+averaging stops helping and the diurnal term setting where it
+stops mattering.]
+The mode statistics carry an internal consistency check. The
+three modes are mutually uncorrelated at short timescales,
+with r13 = 0.003, and propagating the measured mode
+variances and covariances predicts an f3 /f1 ratio scatter of
+2.60 % against 2.66 % observed, reproducing f3 /f2 to the
+reported precision. The parameter domain is thus a coarse but
+self-consistent integrity channel, which is why the waveform
+domain is worth five to six orders of magnitude more.
+B. Waveform-Domain Envelope
+At unity cross-node coherence, (4) gives 57 µs at one hour
+and 12 µs at one day, degrading to 363 µs at one day for SNRlimited reception. These are reference numbers conditioned on
+assumed coherence. The remainder of this section replaces the
+assumption with measurement.
+
+5
+
+C. Detection Bias
+Calibrated on the four-year record, κ ≈ 3.7 predicts 20
+and 202 ns for the two tested cadences, against 27 and 240 ns
+measured.
+[Author decision: state the provenance of the measured
+values. If 27 and 240 ns come from the same four-year record
+on which κ was fitted, this is an internal consistency check
+and must be labelled as one; a labelled consistency check
+survives review, one presented as validation does not. If out-ofsample, say so, since it is materially stronger than it currently
+reads. State the value of σ used, and give both residuals as
+percentages. Section V-A depends on this answer.]
+
+D. Pilot: Detection and Null Battery
+The best single pair detects the fundamental at γ 2 (f1 ) =
+0.0091, at z = 7.8 above the off-band null; stacking stations
+raises this to z = 11. The combined record detects all three
+modes, mode-ordered at z = 19.8, 4.8, and 3.5, the spatialresponse ordering the characterization of Section II-C predicts.
+Four pre-declared scored nulls passed. Phase randomization collapses the fundamental to 0.0020. The vertical coil
+at Livingston, which horizontal-mode field structure predicts
+should not participate, is suppressed twentyfold. A fluxgateby-fluxgate cross-site pair shows no excess. The disjoint
+second epoch independently replicates at z = 14.2. Mains
+contamination is excluded by geography: the sites sit on the
+Western and Eastern Interconnections, which are not phaselocked.
+A fifth check is reported and not scored. A relative shift
+of 60 s collapses the fundamental to 0.0015, and the shift is
+valid as a collapse test for this estimator because it far exceeds
+the analysis segment and therefore pairs disjoint windows of
+any stationary process. It is not scored because populationlevel magnitude-squared coherence is shift-invariant, so the
+argument is avoidable and is not relied upon (Appendix A-B).
+Applied to the pilot with identical parameters, the corner2
+station pairing gives γcan
+(f1 ) = 0.0103 raw against an
+empirical null of 0.0045 ± 0.0006, hence corrected 0.0058,
+at z = 9.7, with all nine station-by-epoch cells independently
+significant at z = 3.3to16.5. This is the denominator of the
+preregistered O3 prediction.
+
+E. Pilot: Bound with Measured Coherence
+Substituting the measured, bias-corrected pilot coherence
+into (4) gives 903 µs at one hour, measured rather than assumed, and under stationarity projects to 184 µs at one day and
+34 µs at thirty days, through the worst-case sensor. What these
+figures should be compared against is treated in Section V-A.
+
+F. O3: Preregistered Outcome
+Results are summarized in Table III. The off-band null is
+0.0399 ± 0.0118 across 2699 Welch averages, which produces
+both the corrected value and z per Section III-G.
+
+SUBMITTED MANUSCRIPT
+
+6
+
+TABLE III
+P REREGISTERED GATES AND OUTCOMES . GPS 1264298000+6 H , 2020-01-29, 100 % RETRIEVAL
+Gate
+
+Frozen threshold
+
+G0 data
+
+≥90 % of requested samples per channel
+
+PASS, 100 %
+
+P1 coherence
+
+2 (f ) exceeds off-band null at z ≥ 5, exceeds all 20
+γcan
+1
+block-permutation surrogates, and collapses under phase
+randomization
+2 (f ) ≥ 0.10. Scored secondary: R, corrected value over
+raw γcan
+1
+the like-for-like pilot baseline 0.0058, forecast 30 to 100
+sub-millisecond at measured T , reported for raw and corrected
+coherence with projections labelled
+majority of 30 min windows at empirical p ≤ 0.05 against 19
+same-statistic surrogates; median lag within 15 ms of the
+propagation band; robust between-window scatter ≤ max(3×
+per-window bound, 0.3 ms) = 0.795 ms
+
+PASS. z = 24.5; observed 0.3291 against surrogate
+maximum 0.0065; phase-randomized 0.0014
+
+D2b lag
+
+1) Why the canonical statistic earned its place: The paircoherence matrix shows the cross-axis pairs dominating:
+H1Y×L1X at 0.158 and H1X×L1Y at 0.148, against diagonal
+values of 0.022 and 0.097. The sensor axes are near-orthogonal
+between sites, and the rotation-invariant estimator (6) recovers
+0.329 where the best scalar pair sees 0.158. All three modes
+are again mode-ordered, at 0.329, 0.108, and 0.020.
+2) The lag is (3), measured: Both records are GPSdisciplined, so θAB ≈ 0 and the recovered lag is, to the
+0.265 ms per-window estimation precision, the propagation
+term of (3) itself. The median of −3.85 ms and the window
+range of ±10 ms sit inside the 13 ms envelope the 3002 km
+baseline permits at v ≈ 0.77c (Fig. 1b). Attribution to specific
+source longitudes is left to route 1 of Section V-D.
+3) Reading the D2b line: The verdict stands as written. The
+frozen scatter rule assumed static source geometry over six
+hours, and a robust scatter (scaled median absolute deviation)
+of 4.95 ms exceeds 0.795 ms. What failed is informative:
+eleven of twelve windows individually beat all nineteen of
+their surrogates, and the per-window estimation bound is
+0.265 ms, so the between-window scatter is 18.7 times estimation noise.
+Exploratory, and labelled as such: γ 2 (f1 ) trends upward
+across the morning (Fig. 1a), and the lag track stays inside
+the geometric band while migrating. Both are the signature
+of a moving effective source region, the (3) term acting on
+six-hour timescales, and they constitute the empirical justification for the systematic row of Table II. The pre-named
+chimney-direction comparison converts this from residual into
+observable.
+4) Provenance: The executing build records its own hash
+in every output, and that hash matches the public deposit.
+Spectral matrices are well conditioned over the scored band:
+in the pilot f1 band the minimum eigenvalue is positive in
+every bin, with condition number median 1.5 and maximum
+1.8. Full artifact chain, version history, execution record, and
+known defects in the frozen deposit are in Appendix A.
+V. D ISCUSSION AND C ONCLUSION
+A. What the Bounds Mean
+PTP’s nominal accuracy target is sub-microsecond, and read
+against it the 184 µs figure of Section IV-E looks unserious.
+
+0.5
+2
+can(f1)
+
+D1 bound
+
+UPHELD. Raw 0.3291, corrected 0.2892, R = 50,
+inside the forecast window
+PASS. 45.7 µs raw and 76.6 µs corrected at T = 6 h;
+22.8/38.3 µs at one day
+not passed. 11 of 12 windows at p ≤ 0.05; median lag
+−3.85 ms; scatter 4.95 ms
+
+(a)
+
+0.4
+0.3
+
+(ms)
+
+P2 sensor
+
+Outcome
+
+15 (b)
+10
+5
+0
+5
+10
+15
+2
+
+r = 0.80
+Eq. (2) band, ±13 ms
+
+frozen criterion ±0.795 ms
+
+3
+4
+5
+6
+7
+UTC, 2020-01-29 (30 min windows)
+
+Fig. 1. Per-window structure of the O3 run, 12 consecutive 30 min windows.
+(a) Canonical coherence at the fundamental rises monotonically in trend across
+the morning (r = 0.80). (b) Recovered lag. Filled markers are windows
+exceeding all 19 surrogates (p ≤ 0.05); the open marker is the one that does
+not. Error bars are the 0.265 ms per-window estimation bound and are smaller
+than the marker. The shaded blue region is the ±13 ms envelope permitted
+by (3) at the 3002 km baseline; the red line and narrow band are the median
+and the frozen ±0.795 ms scatter criterion. The lag stays inside the geometric
+envelope while migrating across it: the wander is 18.7 times estimation noise,
+and is signal.
+
+But the nominal target is not the adversarial one, and for the
+node this architecture addresses the adversarial target does not
+exist.
+Section II-C established that every element of the packetdomain defender’s strategy set fails its precondition at a singlehomed node on a wide-area path. No valid round-trip threshold
+exists at that delay spread. Redundancy requires paths the
+node does not have. Report traffic is distinguishable by an
+attacker watching for it. And both PTP variants permit an
+
+SUBMITTED MANUSCRIPT
+
+evasion leaving the measured path delay untouched. Annessi
+et al. arrive at the same place from the other direction [4],
+concluding that a guaranteed bound on slave offset would
+require knowledge of one-way delays and of the physical
+constraints of the network: no such bound is derivable from
+the observables that node possesses.
+The figures of Section IV are therefore not a competitive
+accuracy claim. They are the first measured bound of any
+size for a node whose guaranteed-under-attack precision was
+previously not a large number but an unobtainable one. Which
+applications a given στ serves is a deployment question and
+is out of scope here.
+1) The two precision quantities: A reader holding Sections IV-E and IV-C has two numbers differing by three orders
+of magnitude, and their relation must be stated rather than
+inferred.
+στ is the geophysical monitor’s own offset-estimation precision at integration time T : the resolution with which an
+independent verification layer bounds a node’s offset, and
+therefore the smallest static or step displacement it can certify
+against. θdet is the bias a ramping adversary accumulates
+before the sequential detector alarms on the servo’s offsetinnovation sequence. The constant κ is calibrated on the fouryear record, but the σ in (5) is the servo innovation scale,
+which is why θdet is reported in nanoseconds and στ in
+microseconds. The monitor sits beneath the servo rather than
+in place of it: the servo supplies precision, and the monitor
+bounds how far that precision can be displaced without the
+displacement becoming observable.
+2) Transfer of κ: Two limits are stated here rather than
+deferred. By Proposition 1, κ is an alarm threshold in signalto-noise units, so at fixed false-alarm rate it depends on the
+autocorrelation of the innovation sequence and not on its scale
+alone. The calibrating record has a measured spectral exponent
+of 0.107, so κ is fixed under mildly correlated innovations
+and applied to a sequence treated as white. Because positive
+correlation reduces the effective independent-sample count,
+this transfer inflates κ relative to its white-innovation value
+and renders θdet conservative in that respect.
+[Author decision, contingent on Section IV-C. Cutting the
+other way, the predicted values fall below the measured at
+both tested cadences, and underprediction of achievable prealarm bias is the unsafe direction for a security quantity. If
+Section IV-C resolves out-of-sample, state that κ is accurate
+to within tens of percent with the residual in the direction
+that understates achievable bias, and that out-of-sample validation against an independent servo innovation trace remains
+outstanding. If it resolves in-sample, this paragraph cannot
+claim a validated residual and must state that no out-of-sample
+validation of κ has been performed.]
+
+B. Independence: Physical Against Topological
+R1–R4 govern reference signals. The nearest alternative
+architecture is path redundancy, which is not a reference at
+all, and the comparison turns on what its independence rests
+on.
+
+7
+
+Both approaches introduce a second information source
+against which the primary channel is checked. Path redundancy’s independence is topological and assumed: it requires
+the adversary to occupy at most m of N paths, and disjointness
+at the logical layer does not imply disjointness in physical
+plant. Shared conduit, a shared transit autonomous system, or
+route manipulation can defeat it, and the slave generally cannot
+verify that they have not. The independence claimed here is
+physical: the cavity field is not carried by the network under
+any topology, so no arrangement of adversary position or route
+control brings it within reach.
+Provisioning costs differ accordingly, being more than three
+verified-disjoint long-haul paths against one sensor per node,
+and so do the failure modes. Redundancy degrades silently
+when its disjointness assumption is false, whereas loss of
+cross-node coherence is observable at the node.
+C. Limitations
+1) Measurement campaign: The measured coherence
+comes from one baseline, three epochs totalling under nine
+hours, and two sensor classes. Both nodes are instruments
+of a single observatory network with homogeneous dataacquisition chains, so a commodity node of independent
+construction remains the outstanding independence test. Multibaseline and multi-season coherence maps remain
+unmea√
+sured. The one-day and thirty-day figures are T projections
+from measured six-hour data and are labelled as such; a 20 h
+coincident segment permits a direct check. Extracting a stable
+offset at the D1 level requires the source-geometry model,
+and the O3 run measured exactly the wander that model
+must remove. The sequential-detection guarantee weakens
+under flicker innovations (Remark 1). The 90 s floor awaits
+its mechanism decision. None of these is hidden inside an
+assumption; each is a named, testable route in Section V-D.
+2) Sensor and deployment envelope: The natural field is 0.1
+to 1 pT in band, and the limiting factor in deployment is rarely
+the intrinsic noise floor of a modern induction coil. It is the
+local environment: mains harmonics and switching electronics,
+microphonics from wind, rain, or footfall, vibrating metal,
+and proximity to power infrastructure. The two configurations
+measured here bracket this envelope rather than sampling its
+best case. Vault-sited coils resolved corrected γ 2 (f1 ) = 0.29.
+Facility fluxgates inside an operating interferometer building,
+an electromagnetic environment few industrial nodes will exceed for hostility, still carried a detectable channel at corrected
+γ 2 = 0.0058, at a measured precision cost of roughly five
+times at one day.
+Site quality therefore buys precision; it does not gate
+existence, down to at least the facility-noise level measured.
+Below that level burial is real: the architecture is functional
+today where Schumann observatories already operate and
+in engineered quiet enclosures, and it is not yet a drop-in
+attachment for an arbitrary urban node. The gap is engineering, not physics: reference-sensor differencing, adaptive
+cancellation of tracked interferers, mains-harmonic notching,
+mechanical isolation, and pre-deployment site characterization,
+which is the same noise-spectrum measurement the detector’s
+calibration requires.
+
+SUBMITTED MANUSCRIPT
+
+Where mitigation fails, the semantics fail safe. Sudden
+loss of cross-node coherence is itself an integrity event,
+consequentially indistinguishable from jamming, and flags the
+node as unverified rather than silently trusted. This also keeps
+the monitor off the always-drop equilibrium of Mizrahi’s
+game [1], in which a detector attains maximum payoff by
+rejecting every exchange while leaving the node with no
+time at all: here the reject condition is a measured physical
+event carrying a null battery behind it, not a threshold on
+a statistic whose false-alarm rate is set by network delay
+variance. “Commodity sensor” is retained in its precise sense,
+that no exotic instrument is required, and explicitly not in the
+sense of any sensor at any site.
+D. Future Work
+1) Chimney-direction test. Regress the per-window τ
+and γ 2 of Fig. 1 against independent global lightning
+activity over multi-day records. Agreement converts the
+failed static rule into a second measured observable and
+calibrates the (3) subtraction; disagreement bounds the
+source model. This is the highest information-per-hour
+test available.
+2) Source-geometry subtraction to a stable offset. Implement Table II end to end: dedispersion, source-region
+estimation from the lag and coherence track itself,
+ensemble averaging, and explicit carry of the day–night
+systematic. Target is reduction of the 4.95 ms wander
+toward the 0.265 ms estimation floor.
+3) Multi-baseline, multi-season coherence atlas. Repeat
+the frozen methodology across dedicated ELF stations
+at 500 to 10000 km and across seasons. This is the first
+dataset against which R3 can be certified rather than
+sampled.
+4) Direct
+√ one-day verification. A single 20 h run tests
+the T projection against measurement with no new
+assumptions.
+5) Sequential detection under flicker innovations. Close
+Remark 1: characterize the innovation spectrum from
+long records, then design and benchmark detectors
+whose pre-detection bias degrades gracefully under 1/f .
+This concerns detector design; whether a constant calibrated on one innovation spectrum transfers to another
+is a separate question raised in Section V-A.
+6) Embedded implementation and protocol integration.
+Build the reference node, measure its γ 2 against a vaultclass station under progressively degraded siting, and
+specify the integration point with IEEE 1588 security
+mechanisms [10]. This route also carries holdover fusion, which the architecture answers compositionally
+rather than competitively: free-running oscillator error
+grows with elapsed time T while στ falls as T −1/2 , so
+the node’s guaranteed bound at any T is the minimum
+of the two, and that minimum is finite across a range
+over which neither source alone is. Holdover carries the
+short interval, the monitor the long one, and they are
+not in competition because they bound different things
+(Section V-A). No crossover time is quoted: a disciplined
+
+8
+
+oscillator’s holdover begins from residual drift rather
+than raw fractional offset, and the dominant term in a
+field enclosure is thermal, so the crossover is a part-andsite band spanning an order of magnitude in T rather
+than a number. Measuring it is part of this route.
+7) Preregistration as reporting standard. The evidence
+architecture used here is domain-independent. Appendix A is the worked instance, defects included.
+8) Exact MIMO generalization of the coherence bound.
+Section III-C evaluates (4) with canonical coherence and
+reads the result as an information bound on the dominant
+coherent mode. Deriving the exact multi-input multioutput generalization would establish how much timing
+information the subdominant modes carry, and therefore
+whether the canonical evaluation is conservative by a
+negligible or a material factor.
+E. Conclusion
+Two-way time transfer will remain rank deficient; the
+question is where the missing information comes from. This
+paper’s answer is a globally excited, spatially correlated field
+whose realization rides inside authenticated records, out of
+reach of transport delay. The contribution is not a competitive
+accuracy figure but the existence of a measured bound for
+a node class whose guaranteed-under-attack precision was
+previously not derivable at all from the observables available
+to it.
+Sequential detection removes the incremental attacker’s
+advantage whenever offset innovations are white or short-range
+correlated: by Proposition 1 the bias achievable before detection scales as the cube root of the ramp rate and vanishes as
+the attack slows. Under flicker-type innovations the advantage
+is bounded rather than eliminated.
+The coherence this architecture requires is no longer assumed. It is measured at 3002 km through the wrong sensor
+and through the right one, it survived its null battery twice, and
+the preregistered sensor-matching prediction was confirmed
+at fifty times, inside its window of thirty to one hundred,
+by an analysis whose hash was on public deposit before the
+data were seen. The separately preregistered static-lag-stability
+criterion was not met and is retained as a limitation rather than
+retroactively relaxed.
+A PPENDIX A
+E VIDENCE G OVERNANCE AND P ROVENANCE
+Route 7 of Section V-D proposes formalizing this evidence
+architecture as a reporting standard for physical-layer security
+claims. This appendix is the worked instance. It is written to be
+checkable rather than persuasive, and it includes the defects.
+A. What Was Frozen, and Why as Code
+The O3 stage was preregistered as executable code rather
+than as a description of intent. The frozen script contains
+the protocol text, gates, thresholds, surrogate constructions,
+pre-declared readings, and a freeze clause, and it refuses to
+run if its own bytes do not hash to the deposited value.
+
+SUBMITTED MANUSCRIPT
+
+Freezing analysis and protocol as one object removes the
+gap between what was declared and what was run. Three
+consequences follow: declared thresholds cannot drift after
+data are seen, because changing them changes the hash; every
+reported number carries the identity of the code that produced
+it; and a reader can verify the binding without trusting the
+authors, by hashing the deposited file.
+
+9
+
+TABLE IV
+V ERSION IDENTITIES
+Version
+
+Change
+
+Statistics
+affected
+
+v4
+f45dca61...
+v4.1
+98a27d1b...
+[pending]
+
+Frozen deposit; produced all
+reported O3 statistics
+Post-verdict serialization fix
+
+—
+
+B. Null and Surrogate Construction
+Pre-freeze review changed four things. Each is recorded
+because each corrected a weaker design.
+The primary statistic is canonical, not best-pair. Selecting
+whichever scalar pair produces the largest peak is pair selection under another name. Equation (6) is rotation-invariant and
+fixed a priori; the O3 pair matrix shows why this mattered.
+N1 is a block permutation, not a time shift. For a stationary
+process a time shift multiplies the cross-spectrum by a unitmagnitude phase factor and leaves magnitude-squared coherence unchanged, so a shift null is not a valid collapse test for
+this estimator at the population level. The frozen N1 splits the
+L1 vector record into 64 s blocks and permutes block order,
+applying the same permutation to both L1 axes, preserving
+marginal spectra and within-site covariance while destroying
+inter-site temporal correspondence. Twenty surrogates give
+empirical p < 1/21.
+The 60 s shift is reported and not scored, for the reason
+above. This is a property of the estimator, not of the dataset,
+so it applies to the pilot battery equally.
+The D2b null uses the same four-pair statistic as the
+observation. An earlier design built the null from one shifted
+pair multiplied by four, a different statistic and therefore not a
+null for it. The frozen version passes 19 block-permutation
+surrogates through the identical four-pair construction per
+window.
+C. Pre-Declared Branch Readings
+Declared before execution, for branches that did and did
+not occur. P1 pass with P2 fail reads as “channel real,
+sensor- or κ2 -limited, not model-false.” Disagreement between
+raw and corrected verdicts is declared SENSITIVE. Retrieval
+below 90 % is INCONCLUSIVE with no scoring. Scoring the
+lag against zero is prohibited: it is scored against the (3)
+propagation band, since GPS discipline removes clock offset
+but not propagation. The last is the branch most likely to be
+assumed; two GPS-disciplined stations have no reason to see
+zero lag, and testing against zero would have been the wrong
+hypothesis.
+D. Analysis Versions
+[Author decision. If the byte-exact v4.1 is recovered, Table IV stands and the third row is a separate logged change.
+If not, v4.1 was superseded before it ever ran to completion,
+the reconstruction is a new version with its own hash, and this
+table must say so. Presenting a freshly written patch under an
+already-published hash is the one move that would damage
+the provenance chain this appendix establishes.]
+
+Serialization of the off-band null
+mean and standard deviation
+
+none
+none
+
+E. Execution Record
+Environment: Python 3.11.15, NumPy 2.4.6, SciPy 1.17.1,
+nds2-client 0.16.12, retrieved via NDS2 from GWOSC. Data:
+GPS 1264298000, duration 21600 s, 100 % retrieval, four
+channels, analysis rate 128 Hz, Welch 2048-sample segments
+with 1024 overlap and 2699 averages.
+An offline gate ran before the network fetch and was
+required to pass: recovery of a synthetic coherence of 0.30
+within 15 %; recovery of a known lag of +31.250 ms within
+0.5 ms; zero-lag centring within 0.5 ms; and an end-to-end test
+carrying a synthetic vector field through a 40° sensor rotation,
+additive noise, the four-pair statistic, the permutation null, and
+lag extraction. All passed.
+Incomplete termination. The v4 run computed every statistic, printed the verdict block, and wrote its results file, then
+raised a NameError at the array-archive write on the final
+line of the scoring function. No reported statistic is affected,
+since the failure occurs after all are computed and serialized,
+and the traceback line number establishes this independently
+of any claim by the author. The spectral archive was not
+written by that run. [Author decision: state whether the rerun
+produced it.]
+F. Known Defects in the Frozen Deposit
+Recorded rather than corrected, because correcting them
+would break the freeze.
+The D2b pass line is stated two ways. The protocol defines
+per-window detection as the observed maximum Q exceeding
+all 19 surrogates at p ≤ 0.05, and the summary pass line
+reads “window SNR at least 5 in a majority of windows.”
+The scoring code implements the first. The ambiguity is
+immaterial: under the p-value rule 11 of 12 windows qualify,
+under the detection-statistic rule 8 of 12 qualify, both are
+majorities, and D2b failed on the between-window scatter
+criterion under either reading. It is disclosed because a reader
+of the deposit will find it, not because it changes anything.
+The corrected coherence is not recoverable from the deposited results file. The off-band null mean is computed and
+printed but not serialized, so a reader given only the results file
+can obtain the raw value but not the corrected one, and cannot
+reproduce R without rerunning. Addressed by the pending
+version in Table IV.
+G. Reproduction
+Seeds are fixed and the input data are immutable public
+records, so a rerun of the same version should reproduce the
+
+SUBMITTED MANUSCRIPT
+
+10
+
+reported verdict exactly; any difference indicates environment
+drift and is itself diagnostic. A reproduction notebook accompanies the paper which verifies the freeze hash before running,
+archives prior outputs before overwriting them, runs the offline
+gate, and diffs recomputed results against recorded ones field
+by field, separating statistical differences from provenance
+differences.
+ACKNOWLEDGMENT
+This research has made use of data or software obtained from the Gravitational Wave Open Science Center
+(gwosc.org), a service of the LIGO Scientific Collaboration,
+the Virgo Collaboration, and KAGRA. [Verify the current full
+mandated text at gwosc.org/acknowledgement; the canonical
+paragraph continues with Virgo (EGO/CNRS/INFN/Nikhef)
+and KAGRA (MEXT/JSPS/NRF/MOST) funding sentences that
+must appear verbatim.]
+R EFERENCES
+[1] T. Mizrahi, “A game theoretic analysis of delay attacks against time
+synchronization protocols,” in Proc. IEEE ISPCS, Sep. 2012, doi:
+10.1109/ISPCS.2012.6336612.
+[2] L. Lamport and P. M. Melliar-Smith, “Synchronizing clocks in the
+presence of faults,” J. ACM, vol. 32, no. 1, pp. 52–78, 1985.
+[3] S. Barreto, A. Suresh, and J.-Y. Le Boudec, “Cyber-attack on packetbased time synchronization protocols: The undetectable delay box,” in
+Proc. IEEE I2MTC, 2016, pp. 1–6.
+[4] R. Annessi, J. Fabini, F. Iglesias, and T. Zseby, “Encryption is futile: Delay attacks on high-precision clock synchronization,” arXiv:1811.08569,
+2018.
+[5] J. Neyer, L. Gassner, and C. Marinescu, “Redundant schemes or how
+to counter the delay attack on time synchronization protocols,” in Proc.
+ISPCS, 2019.
+[6] W. Alghamdi and M. Schukat, “Precision time protocol attack strategies
+and their resistance to existing security extensions,” Cybersecurity, vol.
+4, no. 1, 2021.
+[7] A. Finkenzeller, T. Wakim, M. Hamad, and S. Steinhorst, “Feasible
+time delay attacks against the precision time protocol,” in Proc. IEEE
+GLOBECOM, 2022.
+[8] A. Finkenzeller, O. Butowski, E. Regnath, M. Hamad, and S. Steinhorst,
+“PTPsec: Securing the precision time protocol against time delay attacks
+using cyclic path asymmetry analysis,” in Proc. IEEE INFOCOM, 2024,
+pp. 461–470.
+[9] A. Finkenzeller, A. Fucks, E. Regnath, M. Hamad, and S. Steinhorst,
+“Securing the precision time protocol with SDN-enabled cyclic path
+asymmetry analysis,” ACM Trans. Cyber-Physical Syst., vol. 9, no. 3,
+art. 33, 2025.
+[10] IEEE Standard for a Precision Clock Synchronization Protocol for
+Networked Measurement and Control Systems, IEEE Std 1588-2019.
+[11] G. C. Carter, “Coherence and time delay estimation,” Proc. IEEE, vol.
+75, no. 2, pp. 236–255, 1987.
+[12] K. Marzullo and S. Owicki, “Maintaining the time in a distributed
+system,” ACM SIGOPS Oper. Syst. Rev., 1983.
+[13] I. Kowalska-Leszczyńska et al., “Globally coherent short-duration magnetic field transients and their effect on ground-based gravitational-wave
+detectors,” Class. Quantum Grav., vol. 34, 074002, 2017.
+[14] M. W. Coughlin et al., “Measurement and subtraction of Schumann
+resonances at gravitational-wave interferometers,” Phys. Rev. D, vol. 97,
+102007, 2018.
+[15] R. Abbott et al. (LVK), “Open data from the third observing run of
+LIGO, Virgo, KAGRA and GEO,” Astrophys. J. Suppl., vol. 267, 29,
+2023.
+[16] R. Abbott et al. (LIGO–Virgo), “Open data from the first and second
+observing runs of Advanced LIGO and Advanced Virgo,” SoftwareX,
+vol. 13, 100658, 2021.
+[17] V. C. Mushtak and E. R. Williams, ELF propagation parameters. [Verify
+fields.]
+[18] Z. K. Silagadze, Schumann resonance overview. [Verify fields.]
+[19] G. Sátori et al., 2024. [Verify fields.]
+
+[20] Granada Schumann-resonance repository dataset, items 10481/71563.
+[Complete citation.]
+[21] US Patent 8,954,608 B1.
+[22] US Patent 9,960,901 B2.
+
+

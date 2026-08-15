@@ -11,7 +11,7 @@ Recorded per Section 0 of the loop prompt. A path that does not exist is recorde
 
 | Key | Configured path | Status |
 |---|---|---|
-| MANUSCRIPT | ./manuscript_v11.tex | MISSING |
+| MANUSCRIPT | ./manuscript_v11.tex | MISSING as .tex; author delivered ./manuscript_v11.pdf on 2026-08-15 (sha256 70abbfe5..., pdfTeX build of 2026-08-13), landed at repo root with a labelled pdftotext extraction at ./extraction/manuscript_v11_pdftotext.txt |
 | MANUSCRIPT_MD | ./manuscript_v11.md | MISSING |
 | ARTIFACTS | ./artifacts/ (o3_vault_run.py, o3_results.json, o3_recompile.ipynb) | MISSING |
 | FIGS | ./figs/ | MISSING |
@@ -21,6 +21,8 @@ Recorded per Section 0 of the loop prompt. A path that does not exist is recorde
 | ESCALATIONS | ./DECISIONS_FOR_KYLE.md | NOT CREATED, no escalations raised |
 | STOPS | ./HARD_STOPS.md | NOT CREATED, no hard stop fired |
 | VERIFY | ./VERIFICATION_LEDGER.md | NOT CREATED, blocked, see T0.3 |
+
+Artifact deliveries, 2026-08-15 session continuation: the author uploaded manuscript_v11.pdf three times under the names manuscript_v11, manuscript_v111, manuscript_v112; all three are byte-identical (single sha256), so only one manuscript version exists in this session. A companion explainer page, silentshift.html, was landed at ./site/silentshift.html; it is outside the closure loop's scope. A zip of the eris staging repo (bibliography.md, literature-review.md, data-acquisition-manifest.md) was received but every project file in it is truncated at about 20 KB mid-sentence and its MANIFEST.sha256 was computed over the truncated bytes; it was NOT committed. Fresh hashes for the landed files are in ./MANIFEST.sha256.
 
 Repository census at session start: the working tree contains exactly one file, LICENSE. Git history is a single commit (ac80e28, "Initial commit", LICENSE only). No other branch on the remote carries content (refs: main only). The home directory outside the repository contains no research artifacts.
 
