@@ -28,7 +28,7 @@ Repository census at session start: the working tree contains exactly one file, 
 
 | Item | Tier | Depends on | Status | Verdict |
 |---|---|---|---|---|
-| T0.1 Reproduction rerun and npz recovery | 0 | none | OPEN | |
+| T0.1 Reproduction rerun and npz recovery | 0 | none | BLOCKED-EXTERNAL | see record |
 | T0.2 Kappa provenance lookup | 0 | none | OPEN | |
 | T0.3 Numeric inventory | 0 | none | OPEN | |
 | T1.1 Section 4.1 mechanism decision | 1 | T0.1 | OPEN | |
@@ -54,3 +54,11 @@ Repository census at session start: the working tree contains exactly one file, 
 ## Item records
 
 Item records are appended below as the loop processes each item.
+
+### T0.1 Reproduction rerun and npz recovery
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: run o3_recompile.ipynb end to end, honor its gates, produce o3_spectra.npz, diff the verdict block against frozen o3_results.json, serialize null_mean and null_sd, write an output-hash manifest.
+What was done: searched the working tree, the full git history (single commit, LICENSE only), all remote refs (main only), and the surrounding filesystem. The directory ./artifacts/ does not exist. None of o3_recompile.ipynb, o3_results.json, o3_vault_run.py are present anywhere on disk.
+External action needed: commit or otherwise deliver the ./artifacts/ directory containing o3_recompile.ipynb, the frozen o3_results.json, and o3_vault_run.py, together with whatever input data the notebook reads. No substitute artifact was fabricated and no reproduction was simulated.
+Evidence: repository census in the path configuration audit above.
