@@ -105,6 +105,8 @@ What was done: nothing was pasted. The reference report holding the canonical te
 External action needed: deliver ./refs/ containing the reference report with the canonical acknowledgment text, and manuscript_v11.tex.
 Evidence: repository census in the path configuration audit above.
 
+UPDATE 2026-08-15, second pass. Still BLOCKED-EXTERNAL, blocker narrowed. The delivered manuscript's acknowledgment section (extraction lines 1099 to 1106) carries the opening GWOSC sentence plus a bracket instructing verification of the full mandated text at gwosc.org/acknowledgement, including Virgo (EGO/CNRS/INFN/Nikhef) and KAGRA (MEXT/JSPS/NRF/MOST) funding sentences verbatim. A retrieval was attempted this session and failed: gwosc.org is blocked by this environment's network egress policy. Reconstructing funding sentences from memory is forbidden by standing order 1. Exact externals now needed: (1) the canonical paragraph fetched from https://gwosc.org/acknowledgement/ and delivered as a file, or an egress allowance for gwosc.org; and (2) manuscript_v11.tex to paste it into.
+
 ### T2.5 Coherence-value attribution
 Verdict: CLOSED-BY-EVIDENCE
 Date: 2026-08-15 (second pass, after T0.3 closed)

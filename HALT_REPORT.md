@@ -1,37 +1,32 @@
 # HALT REPORT
 
-Zero-capital closure loop, session of 2026-08-15
-Halt condition: loop step 3a. No item is selectable; every dependency-free item is BLOCKED-EXTERNAL and every remaining OPEN item is locked behind one of them.
+Zero-capital closure loop, updated 2026-08-15 (second pass, after manuscript delivery)
+Halt condition: loop step 3a. No further item is selectable; remaining items are blocked externally, escalated, or dependency-locked.
 
 ## 1. Items closed
 
-None. Zero items reached CLOSED-BY-EVIDENCE.
+- T0.3 Numeric inventory: CLOSED-BY-EVIDENCE. VERIFICATION_LEDGER.md built, 90 rows, every numeric claim in the delivered manuscript inventoried with source and status. Eighteen internal arithmetic relationships machine-recomputed; all matched; no contradiction found.
+- T2.5 Coherence-value attribution: CLOSED-BY-EVIDENCE. Both pilot coherence values (0.0091, 0.0103) occur exactly once each, in Section 4.4, explicitly as this work's own measurements.
 
-## 2. Items blocked
+## 2. Author decisions escalated
 
-All ten dependency-free or rolling items are BLOCKED-EXTERNAL, and all ten trace to one root cause: the repository contains no research artifacts. The working tree holds exactly one file, LICENSE, across the entire git history and all remote branches.
+- D-1 (from T0.2): are the measured 27 and 240 ns detection-bias values in-sample on the four-year record used to fit kappa, or out-of-sample? The manuscript brackets the question in Section 4.3 and mirrors it in Section 5.1; the calibration notebooks that could settle it by evidence are not on disk. Blocks T1.2. See DECISIONS_FOR_KYLE.md.
 
-The external action each item needs, itemized in CLOSURE_LEDGER.md:
+## 3. Items blocked, with the external action each needs
 
-- T0.1 needs ./artifacts/ with o3_recompile.ipynb, frozen o3_results.json, o3_vault_run.py, and the notebook's input data.
-- T0.2 needs the LaTeX sources, notebooks, and threshold derivation files.
-- T0.3, T2.6 need manuscript_v11.tex (or .md) plus its source artifacts.
-- T2.1, T2.4 need ./refs/ (reference verification report, bibliography, canonical acknowledgment text) plus the manuscript.
-- T4.2 needs the segment lists, frozen window definition, and gap documentation.
-- T4.3 needs the literature closure memo naming the two candidate closures.
-- T4.4 needs the stated two-sensor delay-variance bound and its assumptions.
-- T4.5 needs the program's hypotheses and three-way decision-rule format.
-
-The remaining twelve items are OPEN and dependency-locked behind the above.
-
-## 3. Author decisions escalated
-
-None. No escalation was raised because escalations require artifact evidence to present, and no artifacts exist. DECISIONS_FOR_KYLE.md was not created.
+- T0.1 reproduction rerun: needs ./artifacts/ (o3_recompile.ipynb, frozen o3_results.json, o3_vault_run.py) plus notebook input data. Blocks T1.1, T1.3, all of Tier 3, T4.1, and through T4.1 also T4.6 and T4.7.
+- T2.1 bibliography insertion: needs ./refs/ (verified reference set) and manuscript_v11.tex. Blocks T2.2, T2.3.
+- T2.4 acknowledgment: needs the canonical paragraph from gwosc.org/acknowledgement (that domain is blocked by this environment's egress policy) and manuscript_v11.tex.
+- T2.6 compile gate: needs manuscript_v11.tex.
+- T4.2 segment verification: needs the segment lists and frozen-window definition (the manuscript's route 4 names a 20 h coincident segment).
+- T4.3 sequential-detection closure: needs the literature closure memo. The delivered eris literature-review.md contains it but is truncated at 20 KB mid-sentence; the full file was requested and not yet received.
+- T4.4 multi-sensor bound: the manuscript now states the two-sensor bound, eq (4) with route 8 framing, but the full statement of assumptions sits in the truncated literature review; deliver the full file to unblock.
+- T4.5 preregistration draft: partially unblocked by the manuscript (three-way decision-rule format and route definitions now on disk); still needs the eight-route execution map or the full eris files to fix hypotheses without reconstruction.
 
 ## 4. Hard stops fired
 
-None. Missing inputs are a blocker, not a contradiction; nothing was fabricated to route around them. HARD_STOPS.md was not created.
+None. The eris zip's truncated files were detected and NOT committed; their manifest was computed over truncated bytes and would have poisoned provenance.
 
 ## 5. Single next action that unblocks the most downstream work
 
-Commit the research corpus to this repository at the paths configured in the loop prompt: manuscript_v11.tex, ./artifacts/, ./refs/, ./reports/, ./figs/. That one push unblocks all ten blocked items and, through them, the entire registry. If the corpus lives on another machine or in another repository, pushing it to a branch here (or attaching that repository to the session) is sufficient; the loop prompt can then be re-pasted verbatim and the ledger will resume from disk.
+Re-zip and upload the three FULL eris files (bibliography.md, literature-review.md, data-acquisition-manifest.md) plus, if they exist, ./artifacts/ (o3_recompile.ipynb, o3_results.json, o3_vault_run.py) and manuscript_v11.tex. The zip path is proven lossless into this session; the 20 KB cap only hits bare-file uploads. The artifacts directory alone unblocks seven items; the .tex unblocks all manuscript edits; the full eris files unblock T4.3 and feed T2.1.
