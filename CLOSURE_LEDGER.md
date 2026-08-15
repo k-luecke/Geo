@@ -47,7 +47,7 @@ Repository census at session start: the working tree contains exactly one file, 
 | T4.2 Route 4, segment verification | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.3 Route 5, sequential detection closure | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.4 Route 8, multi-sensor bound | 4 | none | BLOCKED-EXTERNAL | see record |
-| T4.5 Route 7, preregistration draft | 4 | none | OPEN | |
+| T4.5 Route 7, preregistration draft | 4 | none | BLOCKED-EXTERNAL | see record |
 | T4.6 Route 1, source-longitude regression | 4 | T4.1, T4.5 | OPEN | |
 | T4.7 Route 3, methodology validation only | 4 | T4.1 | OPEN | |
 
@@ -127,4 +127,12 @@ Date: 2026-08-15
 Definition of done: generalize the two-sensor delay-variance bound to M sensors via canonical coherence, with the M equals 2 reduction verified symbolically, or write a companion-paper problem statement with the reduction condition stated.
 What was done: no derivation was attempted. The gate requires symbolic verification that the generalization reduces to the paper's own two-sensor bound at M equals 2, and that bound (its exact form, assumptions, and notation) exists only in the missing manuscript and derivation files. Deriving against a guessed form of the bound would make the reduction check meaningless.
 External action needed: deliver the manuscript section or derivation file stating the two-sensor delay-variance bound, including its assumptions.
+Evidence: repository census in the path configuration audit above.
+
+### T4.5 Route 7, preregistration draft
+Verdict: BLOCKED-EXTERNAL
+Date: 2026-08-15
+Definition of done: draft the confirmatory-run preregistration in the program's own three-way decision-rule format, with hypotheses, decision rules, and analysis plan fixed before any Route 1 or Route 3 confirmatory analysis.
+What was done: no draft was written. The program's decision-rule format, the hypotheses for Routes 1 and 3, the published diurnal source-migration relation to be tested, and the stability criteria referenced by T4.1 and T4.6 all live in the missing manuscript and reports. Inventing hypotheses and thresholds would produce a preregistration that does not belong to this program, and downstream gates (T4.6 requires its criterion fixed here) would inherit fabricated rules.
+External action needed: deliver manuscript_v11 and the eight-route execution map so the draft can quote the program's hypotheses and decision-rule format rather than reconstruct them.
 Evidence: repository census in the path configuration audit above.
