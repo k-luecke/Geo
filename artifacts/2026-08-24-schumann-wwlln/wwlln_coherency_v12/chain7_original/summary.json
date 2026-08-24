@@ -1,0 +1,15 @@
+{
+  "status": "experiment_actually_run",
+  "observable": "geographic-NE complex 2x2 coherency",
+  "band_hz": [6, 25],
+  "kernel": "Mushtak-Williams 2002 knee / schupy (Bozoki et al. 2019)",
+  "primary_losses": {
+    "equal_occupied_cells": 0.390,
+    "frozen_first_window": 0.613,
+    "same_morning_mean": 0.887,
+    "contemporaneous_DE_weighted": 0.986
+  },
+  "contemporaneous_beats_same_morning_mean_windows": 3,
+  "n_windows": 12,
+  "interpretation": "Contemporaneous 30-minute WWLLN source detail did not improve prediction over deliberately less informative stationary descriptions on this six-hour interval."
+}
