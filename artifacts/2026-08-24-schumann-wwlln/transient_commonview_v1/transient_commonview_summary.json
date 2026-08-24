@@ -1,0 +1,73 @@
+{
+  "experiment": "transient_commonview_v1",
+  "preregistered_before_event_match_inspection": true,
+  "interval": {
+    "gps_start": 1264298000,
+    "duration_s": 21600.0,
+    "fs_hz": 128.0
+  },
+  "inputs": {
+    "capture_sha256": "c654903f3c63403a011d7806b7eff9b7d0580c044774dfc18028ec3221c27c52",
+    "catalog_sha256": "ffbc9d0f365ba198e2f9571ba429a021b0ac87bf3a863548e684883576fd9e20",
+    "prereg_sha256": "a1314b1c6e0045c926d20b6bb3a3364c772a5f6e2d88386b30560e104e9dcec7",
+    "primary_catalog_rows": 149433,
+    "qc50_rows_secondary": 117037
+  },
+  "detector": {
+    "H1_event_count": 4431,
+    "L1_event_count": 861,
+    "H1_envelope_median": 0.0015505794049598576,
+    "L1_envelope_median": 0.018881105892009135,
+    "H1_envelope_robust_scale": 0.0008605601867923173,
+    "L1_envelope_robust_scale": 0.009971137999655093
+  },
+  "primary": {
+    "vg_fraction_c": 0.75,
+    "association_gate_ms": 50.0,
+    "geometry_gate_ms": 15.625,
+    "common_view_count": 30,
+    "T_obs_geometry_consistent": 18,
+    "within_1_sample_count": 10,
+    "median_residual_ms": -11.633810348449492,
+    "mad_residual_ms": 7.79358149826704,
+    "null_n": 1000,
+    "null_seed": 20260824,
+    "null_mean_T": 16.854,
+    "null_median_T": 17.0,
+    "null_max_T": 30,
+    "empirical_p": 0.42157842157842157,
+    "verdict": "no_support_for_HA",
+    "verdict_reason": "minimum event count met but empirical p > 0.05"
+  },
+  "diagnostics": {
+    "bearing_axis_count": 60,
+    "bearing_within_30deg_count": 34,
+    "bearing_within_30deg_fraction": 0.5666666666666667
+  },
+  "secondary": {
+    "qc50_subset": {
+      "vg_fraction_c": 0.75,
+      "catalog_rows": 117037,
+      "common_view_count": 53,
+      "geometry_consistent_2sample_count": 30,
+      "median_residual_ms": -12.019434450337378
+    },
+    "vg_sensitivities": [
+      {
+        "vg_fraction_c": 0.7,
+        "catalog_rows": 149433,
+        "common_view_count": 32,
+        "geometry_consistent_2sample_count": 19,
+        "median_residual_ms": -12.464796801910172
+      },
+      {
+        "vg_fraction_c": 0.8,
+        "catalog_rows": 149433,
+        "common_view_count": 30,
+        "geometry_consistent_2sample_count": 18,
+        "median_residual_ms": -10.9066972016714
+      }
+    ]
+  },
+  "interpretation_boundary": "128 Hz common-view feasibility only; no precision timing or position claim."
+}

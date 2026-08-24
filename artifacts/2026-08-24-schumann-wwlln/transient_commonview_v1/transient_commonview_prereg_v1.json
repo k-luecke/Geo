@@ -1,0 +1,60 @@
+{
+  "name": "transient_commonview_prereg_v1",
+  "freeze_date": "2026-08-24",
+  "interval": {
+    "gps": [
+      1264298000,
+      1264319600
+    ],
+    "utc": [
+      "2020-01-29T01:53:02Z",
+      "2020-01-29T07:53:02Z"
+    ],
+    "sample_rate_hz": 128
+  },
+  "primary_band_hz": [
+    6.0,
+    25.0
+  ],
+  "filter": "zero_phase_4th_order_butterworth_sos",
+  "detector": {
+    "peak_sigma": 6.0,
+    "onset_sigma": 3.0,
+    "lookback_s": 0.25,
+    "min_peak_separation_s": 0.5,
+    "min_events_each_site": 5
+  },
+  "wwlln_primary_qc": {
+    "nstn_min": 5,
+    "resid_us_max_exclusive": 30,
+    "energy_used": false
+  },
+  "geometry": {
+    "earth_radius_km": 6371.0,
+    "vg_primary_c": 0.75,
+    "vg_sensitivities_c": [
+      0.7,
+      0.8
+    ]
+  },
+  "association_gate_ms": 50.0,
+  "association_rule": "exactly_one_candidate_per_site_same_stroke_both_sites",
+  "primary_residual_gate_ms": 15.625,
+  "null": {
+    "type": "circular_wwlln_time_shift",
+    "n": 1000,
+    "seed": 20260824,
+    "min_abs_shift_s": 60
+  },
+  "decision": {
+    "min_consistent_events": 5,
+    "p_emp_max": 0.05
+  },
+  "secondary_only": [
+    "QC50_subset",
+    "vg_0.70c",
+    "vg_0.80c",
+    "bearing",
+    "waveform_xcorr"
+  ]
+}

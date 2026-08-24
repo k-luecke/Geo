@@ -1,0 +1,18 @@
+{
+  "experiment": "transient_commonview_v1",
+  "inputs": {
+    "o3_capture_v1.npz": "c654903f3c63403a011d7806b7eff9b7d0580c044774dfc18028ec3221c27c52",
+    "AE_catalog_private_not_redistributed": "ffbc9d0f365ba198e2f9571ba429a021b0ac87bf3a863548e684883576fd9e20"
+  },
+  "artifacts": {
+    "transient_commonview_prereg_v1.md": "a1314b1c6e0045c926d20b6bb3a3364c772a5f6e2d88386b30560e104e9dcec7",
+    "transient_commonview_prereg_v1.json": "f7b729e2ec10cae929e90ee61cec026fdf6c1a75c72cf0f4694e8b25a446431d",
+    "transient_commonview_prereg_v1_manifest.json": "2a44d844337323b159260ac0be53f22fcd1464c1a80209ac2d687c7d6b717693",
+    "transient_commonview_analysis_v1.py": "8e1ead758ce7709ae1ec8bf67b801f5480e0a7046814031d81cb52e0a314bd75",
+    "transient_commonview_events_H1.csv": "88747fd2468e4241677095c121c6630d9753a2dc5cb0dace8654dc0476458362",
+    "transient_commonview_events_L1.csv": "288fd38615933eabd97929c363c17ba9de9ed9df37c9e9134c9192fa6b1e1b6e",
+    "transient_commonview_associations.csv": "db50b58a78f5c2f8b2ed4b9b37da8fa6584dae203109b619055479fce5316927",
+    "transient_commonview_null_counts.npy": "d5c197cf0b9c2df6a479318300e650ae12989ad20e0874cebfc2d0ffa5895302",
+    "transient_commonview_summary.json": "aba56a3302414166fb4b55cabb8d60019eb0f67b1ffe2f4b87755b88897b8831"
+  }
+}

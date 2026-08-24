@@ -1,0 +1,10 @@
+{
+  "status": "post_result_audit_sensitivity",
+  "parents": "same frozen magnetic and source-side parents as Chain7",
+  "added_comparator": "leave-one-window-out morning mean",
+  "loo_mean_loss": 0.888,
+  "contemporaneous_loss": 0.986,
+  "contemporaneous_beats_loo_windows": 3,
+  "n_windows": 12,
+  "conclusion": "Comparator leakage was not carrying the Chain7 negative result."
+}
