@@ -18,9 +18,14 @@ Open research notebook preserving the exploratory analyses, preregistered hypoth
 
 ## Related Surfaces
 
-- Curated O3 reproducibility package: [`k-luecke/time-integrity`](https://github.com/k-luecke/time-integrity)
+- Curated O3 reproducibility package & v2.0 preprint: [`k-luecke/time-integrity`](https://github.com/k-luecke/time-integrity)
+- Preprints & verification index: [`driftboundlabs.com/papers.html`](https://driftboundlabs.com/papers.html)
 - Case summary: [`termbrow.org/projects/geo.html`](https://termbrow.org/projects/geo.html)
 - Lab site: [`driftboundlabs.com`](https://driftboundlabs.com)
+
+## Acknowledgments
+
+The author gratefully thanks **Robert H. Holzworth** (University of Washington) and the **World Wide Lightning Location Network (`http://wwlln.net`)**, a collaboration among over 50 universities and institutions, for providing the WWLLN global lightning location data (`doi:10.1029/2019JD030975`) used in the source-conditioned coherency and transient common-view investigations (`artifacts/2026-08-24-schumann-wwlln/`; raw WWLLN stroke files are copyrighted by the University of Washington and are not redistributed here). Auxiliary magnetometer time series were obtained from the Gravitational Wave Open Science Center (`gwosc.org`), a service of the LIGO Scientific Collaboration, the Virgo Collaboration, and KAGRA.
 
 ## License
 
