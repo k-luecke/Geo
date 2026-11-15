@@ -54,7 +54,7 @@ its reference signal, none specific to the Schumann band:
 
 P
 
-The author is an independent researcher (e-mail: k2luecke@gmail.com).
+The author is an independent researcher (e-mail: admin@driftboundlabs.com).
 Analysis code, preregistration text, and run artifacts are on public deposit;
 see Appendix A.
 
